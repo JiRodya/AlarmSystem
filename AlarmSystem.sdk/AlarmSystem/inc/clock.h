@@ -40,7 +40,9 @@ void Clock_Init(u8 mode);
 Time Clock_GetTime(Target src);
 void Clock_SetTime(Time val, Target t);
 void Clock_SetAlarm(Time time);
-
+u8  Clock_CheckAlarm();
+void Clock_ResetAlarm (Target alarm);
 //void PrintTime(RTCC_Target src);
+Time Clock_IncrementTime(Time time, int delta_seconds);
 
 #endif

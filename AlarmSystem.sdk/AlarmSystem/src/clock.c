@@ -13,7 +13,7 @@
 /************************** Function Declarations ***************************/
 
 
-Time Clock_IncrementTime(Time time, int delta_seconds);
+//Time Clock_IncrementTime(Time time, int delta_seconds);
 Time Clock_DecrementTime(Time time, int delta_seconds);
 
 /************************** Global Declarations ****************************/
@@ -67,17 +67,37 @@ void Clock_Init(u8 mode) {
 
 Time Clock_GetTime( Target src) {
    Time val;
+   RTCC_Target target;
+   switch(src){
+   	   case CLOCK:
+   		   target = RTCC_TARGET_RTCC;
+   		   break;
+   	   case MAIN_ALARM:
+   		   target = RTCC_TARGET_ALM0 ;
+   		   break;
+   	   case WARNING_ALARM:
+   		   target = RTCC_TARGET_ALM1 ;
+   		   break;
+   	   case CLOCK_PWRD:
+   		   target = RTCC_TARGET_PWRD;
+   		   break;
+   	   case CLOCK_PWRU:
+   		   target = RTCC_TARGET_PWRU ;
+   		   break;
 
-   if (src != CLOCK_PWRD && src != CLOCK_PWRU) {
-      val.second = RTCC_getSec(&clock, src);
    }
+   if (target != CLOCK_PWRD && target != CLOCK_PWRU) {
+      val.second = RTCC_getSec(&clock, target);
+   }
+	val.minute = RTCC_getMin(&clock, target);
+	val.hour   = RTCC_getHour(&clock, target);
+	val.ampm   = RTCC_getAmPm(&clock, target);
+	val.day    = RTCC_getDay(&clock, target);
+	val.date   = RTCC_getDate(&clock, target);
+	val.month  = RTCC_getMonth(&clock, target);
 
-   val.minute = RTCC_getMin(&clock, src);
-   val.hour   = RTCC_getHour(&clock, src);
-   val.ampm   = RTCC_getAmPm(&clock, src);
-   val.day    = RTCC_getDay(&clock, src);
-   val.date   = RTCC_getDate(&clock, src);
-   val.month  = RTCC_getMonth(&clock, src);
+
+
 
    if (src == CLOCK) {
       val.year = RTCC_getYear(&clock);
@@ -96,7 +116,7 @@ void Clock_SetTime(Time val, Target t) {
    RTCC_setDay(&clock, t, val.day);
    RTCC_setDate(&clock, t, val.date);
    RTCC_setMonth(&clock, t, val.month);
-   xil_printf("SET: %x, %x, %x||\n",val.hour,val.minute,val.second);
+   xil_printf("SET: %x, %x, %x||\r\n",val.hour,val.minute,val.second);
 
 
 }
@@ -156,5 +176,12 @@ Time Clock_DecrementTime(Time time, int delta_seconds) {
     result.hour = int2bcd(temp % 24); // Convert hours
 
     return result;
+}
+
+u8 Clock_CheckAlarm(){
+	return RTCC_checkFlag(&clock, RTCC_TARGET_ALM0);
+}
+void Clock_ResetAlarm (Target alarm){
+	RTCC_disableAlarm(&clock, alarm);
 }
 
