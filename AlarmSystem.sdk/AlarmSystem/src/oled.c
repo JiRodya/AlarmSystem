@@ -1,9 +1,9 @@
 #include "oled.h"
 #include <stdio.h>
+#include "data_handle.h"
 
 /***************************** String Values needed *******************************/
-const char *months[12] = {"Jan", "Feb", "Mar", "Apr", "May", "Jun",
-                              "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
+
 
 //alarm_bitmap
 const uint8_t alarm_bitmap[16][4] = {
@@ -46,7 +46,7 @@ const uint8_t clock_bitmap[16][4] = {
 };
 
 /***************************** Forward declaration *******************************/
-static void OLED_DisplayBitmap(PmodOLED *InstancePtr, const uint8_t bitmap[16][4], int startColumn);
+//static void OLED_DisplayBitmap(PmodOLED *InstancePtr, const uint8_t bitmap[16][4], int startColumn);
 
 
 /***************************** Generic Functions *******************************/
@@ -111,46 +111,46 @@ void OLED_DisplayTime(PmodOLED *InstancePtr, int hour, int minute, int second) {
 //}
 
 
-void OLED_DisplayDate(PmodOLED *InstancePtr, int day, int month, int year) {
-    char dateBuffer[20];
-
-    // Assuming the year is in BCD format, convert it to integer
-    // If the year is already an integer, you can comment out the next line
-    int intYear = bcd2int(year);
-
-    // Format the date as DD Mon, YYYY (e.g., 11 Nov, 2023)
-    snprintf(dateBuffer, sizeof(dateBuffer), "%02x %s, %04d", day, months[month - 1], intYear);
-
-    // Display the date
-    OLED_SetCursor(InstancePtr, 0, 3); // Adjust for position
-    OLED_PutString(InstancePtr, dateBuffer);
-
-    OLED_Update(InstancePtr);
-}
-
-
-void OLED_DisplayIcons(PmodOLED *InstancePtr, enum bitmaps choice) {
-    switch (choice) {
-        case ALARM:
-            OLED_DisplayBitmap(InstancePtr, alarm_bitmap,127);
-            break;
-        case CLOCK:
-            OLED_DisplayBitmap(InstancePtr, clock_bitmap,127);
-            break;
-        // ... other cases if needed
-    }
-}
-
-/***************************** Helper Functions *******************************/
-static void OLED_DisplayBitmap(PmodOLED *InstancePtr, const uint8_t bitmap[16][4], int startColumn) {
-    for (int row = 0; row < 16; row++) {
-        OLED_SetCursor(InstancePtr, startColumn, row);
-        for (int col = 0; col < 4; col++) {
-            OLED_WriteByte(InstancePtr, bitmap[row][col]);
-        }
-    }
-    OLED_Update(InstancePtr);
-}
-
+//void OLED_DisplayDate(PmodOLED *InstancePtr, int day, int month, int year) {
+//    char dateBuffer[20];
+//
+//    // Assuming the year is in BCD format, convert it to integer
+//    // If the year is already an integer, you can comment out the next line
+//    int intYear = bcd2int(year);
+//
+//    // Format the date as DD Mon, YYYY (e.g., 11 Nov, 2023)
+//    snprintf(dateBuffer, sizeof(dateBuffer), "%02x %s, %04d", day, months[month - 1], intYear);
+//
+//    // Display the date
+//    OLED_SetCursor(InstancePtr, 0, 3); // Adjust for position
+//    OLED_PutString(InstancePtr, dateBuffer);
+//
+//    OLED_Update(InstancePtr);
+//}
+//
+//
+//void OLED_DisplayIcons(PmodOLED *InstancePtr, enum bitmaps choice) {
+//    switch (choice) {
+//        case ALARM:
+//            OLED_DisplayBitmap(InstancePtr, alarm_bitmap,127);
+//            break;
+//        case TIME:
+//            OLED_DisplayBitmap(InstancePtr, clock_bitmap,127);
+//            break;
+//        // ... other cases if needed
+//    }
+//}
+//
+///***************************** Helper Functions *******************************/
+//static void OLED_DisplayBitmap(PmodOLED *InstancePtr, const uint8_t bitmap[16][4], int startColumn) {
+//    for (int row = 0; row < 16; row++) {
+//        OLED_SetCursor(InstancePtr, startColumn, row);
+//        for (int col = 0; col < 4; col++) {
+//            OLED_WriteByte(InstancePtr, bitmap[row][col]);
+//        }
+//    }
+//    OLED_Update(InstancePtr);
+//}
+//
 
 

@@ -8,6 +8,7 @@ LD_SRCS += \
 
 C_SRCS += \
 ../src/clock.c \
+../src/data_handle.c \
 ../src/interrupt_handler.c \
 ../src/io.c \
 ../src/main.c \
@@ -15,6 +16,7 @@ C_SRCS += \
 
 OBJS += \
 ./src/clock.o \
+./src/data_handle.o \
 ./src/interrupt_handler.o \
 ./src/io.o \
 ./src/main.o \
@@ -22,6 +24,7 @@ OBJS += \
 
 C_DEPS += \
 ./src/clock.d \
+./src/data_handle.d \
 ./src/interrupt_handler.d \
 ./src/io.d \
 ./src/main.d \

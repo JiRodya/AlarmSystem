@@ -1,8 +1,23 @@
-00:21:18 **** Incremental Build of configuration Debug for project AlarmSystem ****
+13:54:16 **** Auto Build of configuration Debug for project AlarmSystem ****
 make pre-build main-build 
 a9-linaro-pre-build-step
 ' '
-make: Nothing to be done for 'main-build'.
+'Building file: ../src/main.c'
+'Invoking: ARM v7 gcc compiler'
+arm-none-eabi-gcc -Wall -O0 -g3 -I../../AlarmSystem_bsp/ps7_cortexa9_0/include -I"C:\X_Projects\AlarmSystem\AlarmSystem.sdk\AlarmSystem" -I"C:\X_Projects\AlarmSystem\AlarmSystem.sdk\AlarmSystem\inc" -c -fmessage-length=0 -MT"src/main.o" -mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -MMD -MP -MF"src/main.d" -MT"src/main.o" -o "src/main.o" "../src/main.c"
+../src/main.c: In function 'main':
+../src/main.c:57:21: error: 'myOLED' undeclared (first use in this function); did you mean 'OLED'?
+     OLED_Terminate(&myOLED);
+                     ^~~~~~
+                     OLED
+../src/main.c:57:21: note: each undeclared identifier is reported only once for each function it appears in
+../src/main.c:40:10: warning: unused variable 'alarm' [-Wunused-variable]
+     Time alarm;
+          ^~~~~
+../src/main.c:39:10: warning: unused variable 'currentTime' [-Wunused-variable]
+     Time currentTime;
+          ^~~~~~~~~~~
+make: *** [src/subdir.mk:38: src/main.o] Error 1
 
-00:21:18 Build Finished (took 90ms)
+13:54:17 Build Finished (took 218ms)
 

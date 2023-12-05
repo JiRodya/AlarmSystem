@@ -4,7 +4,7 @@
 #include <stdint.h>
 #include "PmodOLED.h"
 
-enum bitmaps{ALARM, CLOCK};
+enum bitmaps{ALARM, TIME};
 void OLED_Initialize(PmodOLED *InstancePtr, u32 GPIO_Address, u32 SPI_Address, u8 orientation, u8 invert);
 
 void OLED_ClearDisplay(PmodOLED *InstancePtr);

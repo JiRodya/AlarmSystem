@@ -13,7 +13,8 @@ src/oled.o src/oled.o: ../src/oled.c \
  ../../AlarmSystem_bsp/ps7_cortexa9_0/include/xpseudo_asm.h \
  ../../AlarmSystem_bsp/ps7_cortexa9_0/include/xreg_cortexa9.h \
  ../../AlarmSystem_bsp/ps7_cortexa9_0/include/xpseudo_asm_gcc.h \
- ../../AlarmSystem_bsp/ps7_cortexa9_0/include/xspi.h
+ ../../AlarmSystem_bsp/ps7_cortexa9_0/include/xspi.h \
+ C:\X_Projects\AlarmSystem\AlarmSystem.sdk\AlarmSystem\inc/data_handle.h
 
 C:\X_Projects\AlarmSystem\AlarmSystem.sdk\AlarmSystem\inc/oled.h:
 
@@ -44,3 +45,5 @@ C:\X_Projects\AlarmSystem\AlarmSystem.sdk\AlarmSystem\inc/oled.h:
 ../../AlarmSystem_bsp/ps7_cortexa9_0/include/xpseudo_asm_gcc.h:
 
 ../../AlarmSystem_bsp/ps7_cortexa9_0/include/xspi.h:
+
+C:\X_Projects\AlarmSystem\AlarmSystem.sdk\AlarmSystem\inc/data_handle.h:

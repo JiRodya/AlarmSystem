@@ -1,10 +1,10 @@
 -- Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
 -- --------------------------------------------------------------------------------
 -- Tool Version: Vivado v.2019.1 (win64) Build 2552052 Fri May 24 14:49:42 MDT 2019
--- Date        : Wed Nov 22 23:16:07 2023
+-- Date        : Fri Dec  1 19:16:14 2023
 -- Host        : DESKTOP-9DRVH73 running 64-bit major release  (build 9200)
 -- Command     : write_vhdl -force -mode funcsim
---               c:/X_Projects/AlarmSystem/AlarmSystem.srcs/sources_1/bd/system/ip/system_processing_system7_0_0/system_processing_system7_0_0_sim_netlist.vhdl
+--               C:/X_Projects/AlarmSystem/AlarmSystem.srcs/sources_1/bd/system/ip/system_processing_system7_0_0/system_processing_system7_0_0_sim_netlist.vhdl
 -- Design      : system_processing_system7_0_0
 -- Purpose     : This VHDL netlist is a functional simulation representation of the design and should not be modified or
 --               synthesized. This netlist cannot be used for SDF annotated simulation.
@@ -3420,6 +3420,7 @@ entity system_processing_system7_0_0 is
     M_AXI_GP0_RDATA : in STD_LOGIC_VECTOR ( 31 downto 0 );
     IRQ_F2P : in STD_LOGIC_VECTOR ( 0 to 0 );
     Core0_nFIQ : in STD_LOGIC;
+    Core0_nIRQ : in STD_LOGIC;
     FCLK_CLK0 : out STD_LOGIC;
     FCLK_RESET0_N : out STD_LOGIC;
     MIO : inout STD_LOGIC_VECTOR ( 53 downto 0 );
@@ -3854,6 +3855,8 @@ architecture STRUCTURE of system_processing_system7_0_0 is
   attribute X_INTERFACE_INFO of Core0_nFIQ : signal is "xilinx.com:signal:interrupt:1.0 Core0_nFIQ INTERRUPT";
   attribute X_INTERFACE_PARAMETER : string;
   attribute X_INTERFACE_PARAMETER of Core0_nFIQ : signal is "XIL_INTERFACENAME Core0_nFIQ, SENSITIVITY LEVEL_HIGH, PortWidth 1";
+  attribute X_INTERFACE_INFO of Core0_nIRQ : signal is "xilinx.com:signal:interrupt:1.0 Core0_nIRQ INTERRUPT";
+  attribute X_INTERFACE_PARAMETER of Core0_nIRQ : signal is "XIL_INTERFACENAME Core0_nIRQ, SENSITIVITY LEVEL_HIGH, PortWidth 1";
   attribute X_INTERFACE_INFO of DDR_CAS_n : signal is "xilinx.com:interface:ddrx:1.0 DDR CAS_N";
   attribute X_INTERFACE_INFO of DDR_CKE : signal is "xilinx.com:interface:ddrx:1.0 DDR CKE";
   attribute X_INTERFACE_INFO of DDR_CS_n : signal is "xilinx.com:interface:ddrx:1.0 DDR CS_N";
@@ -3952,7 +3955,7 @@ inst: entity work.system_processing_system7_0_0_processing_system7_v5_5_processi
       CAN1_PHY_RX => '0',
       CAN1_PHY_TX => NLW_inst_CAN1_PHY_TX_UNCONNECTED,
       Core0_nFIQ => Core0_nFIQ,
-      Core0_nIRQ => '0',
+      Core0_nIRQ => Core0_nIRQ,
       Core1_nFIQ => '0',
       Core1_nIRQ => '0',
       DDR_ARB(3 downto 0) => B"0000",

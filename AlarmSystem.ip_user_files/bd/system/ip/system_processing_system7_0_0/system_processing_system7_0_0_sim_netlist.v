@@ -1,10 +1,10 @@
 // Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
 // --------------------------------------------------------------------------------
 // Tool Version: Vivado v.2019.1 (win64) Build 2552052 Fri May 24 14:49:42 MDT 2019
-// Date        : Wed Nov 22 23:16:07 2023
+// Date        : Fri Dec  1 19:16:14 2023
 // Host        : DESKTOP-9DRVH73 running 64-bit major release  (build 9200)
 // Command     : write_verilog -force -mode funcsim
-//               c:/X_Projects/AlarmSystem/AlarmSystem.srcs/sources_1/bd/system/ip/system_processing_system7_0_0/system_processing_system7_0_0_sim_netlist.v
+//               C:/X_Projects/AlarmSystem/AlarmSystem.srcs/sources_1/bd/system/ip/system_processing_system7_0_0/system_processing_system7_0_0_sim_netlist.v
 // Design      : system_processing_system7_0_0
 // Purpose     : This verilog netlist is a functional simulation representation of the design and should not be modified
 //               or synthesized. This netlist cannot be used for SDF annotated simulation.
@@ -76,6 +76,7 @@ module system_processing_system7_0_0
     M_AXI_GP0_RDATA,
     IRQ_F2P,
     Core0_nFIQ,
+    Core0_nIRQ,
     FCLK_CLK0,
     FCLK_RESET0_N,
     MIO,
@@ -160,6 +161,7 @@ module system_processing_system7_0_0
   (* X_INTERFACE_INFO = "xilinx.com:interface:aximm:1.0 M_AXI_GP0 RDATA" *) (* X_INTERFACE_PARAMETER = "XIL_INTERFACENAME M_AXI_GP0, SUPPORTS_NARROW_BURST 0, NUM_WRITE_OUTSTANDING 8, NUM_READ_OUTSTANDING 8, DATA_WIDTH 32, PROTOCOL AXI3, FREQ_HZ 50000000, ID_WIDTH 12, ADDR_WIDTH 32, AWUSER_WIDTH 0, ARUSER_WIDTH 0, WUSER_WIDTH 0, RUSER_WIDTH 0, BUSER_WIDTH 0, READ_WRITE_MODE READ_WRITE, HAS_BURST 1, HAS_LOCK 1, HAS_PROT 1, HAS_CACHE 1, HAS_QOS 1, HAS_REGION 0, HAS_WSTRB 1, HAS_BRESP 1, HAS_RRESP 1, MAX_BURST_LENGTH 16, PHASE 0.000, CLK_DOMAIN system_processing_system7_0_0_FCLK_CLK0, NUM_READ_THREADS 4, NUM_WRITE_THREADS 4, RUSER_BITS_PER_BYTE 0, WUSER_BITS_PER_BYTE 0, INSERT_VIP 0" *) input [31:0]M_AXI_GP0_RDATA;
   (* X_INTERFACE_INFO = "xilinx.com:signal:interrupt:1.0 IRQ_F2P INTERRUPT" *) (* X_INTERFACE_PARAMETER = "XIL_INTERFACENAME IRQ_F2P, SENSITIVITY LEVEL_HIGH, PortWidth 1" *) input [0:0]IRQ_F2P;
   (* X_INTERFACE_INFO = "xilinx.com:signal:interrupt:1.0 Core0_nFIQ INTERRUPT" *) (* X_INTERFACE_PARAMETER = "XIL_INTERFACENAME Core0_nFIQ, SENSITIVITY LEVEL_HIGH, PortWidth 1" *) input Core0_nFIQ;
+  (* X_INTERFACE_INFO = "xilinx.com:signal:interrupt:1.0 Core0_nIRQ INTERRUPT" *) (* X_INTERFACE_PARAMETER = "XIL_INTERFACENAME Core0_nIRQ, SENSITIVITY LEVEL_HIGH, PortWidth 1" *) input Core0_nIRQ;
   (* X_INTERFACE_INFO = "xilinx.com:signal:clock:1.0 FCLK_CLK0 CLK" *) (* X_INTERFACE_PARAMETER = "XIL_INTERFACENAME FCLK_CLK0, FREQ_HZ 50000000, PHASE 0.000, CLK_DOMAIN system_processing_system7_0_0_FCLK_CLK0, INSERT_VIP 0" *) output FCLK_CLK0;
   (* X_INTERFACE_INFO = "xilinx.com:signal:reset:1.0 FCLK_RESET0_N RST" *) (* X_INTERFACE_PARAMETER = "XIL_INTERFACENAME FCLK_RESET0_N, POLARITY ACTIVE_LOW, INSERT_VIP 0" *) output FCLK_RESET0_N;
   (* X_INTERFACE_INFO = "xilinx.com:display_processing_system7:fixedio:1.0 FIXED_IO MIO" *) inout [53:0]MIO;
@@ -185,6 +187,7 @@ module system_processing_system7_0_0
   (* X_INTERFACE_INFO = "xilinx.com:display_processing_system7:fixedio:1.0 FIXED_IO PS_PORB" *) (* X_INTERFACE_PARAMETER = "XIL_INTERFACENAME FIXED_IO, CAN_DEBUG false" *) inout PS_PORB;
 
   wire Core0_nFIQ;
+  wire Core0_nIRQ;
   wire [14:0]DDR_Addr;
   wire [2:0]DDR_BankAddr;
   wire DDR_CAS_n;
@@ -612,7 +615,7 @@ module system_processing_system7_0_0
         .CAN1_PHY_RX(1'b0),
         .CAN1_PHY_TX(NLW_inst_CAN1_PHY_TX_UNCONNECTED),
         .Core0_nFIQ(Core0_nFIQ),
-        .Core0_nIRQ(1'b0),
+        .Core0_nIRQ(Core0_nIRQ),
         .Core1_nFIQ(1'b0),
         .Core1_nIRQ(1'b0),
         .DDR_ARB({1'b0,1'b0,1'b0,1'b0}),

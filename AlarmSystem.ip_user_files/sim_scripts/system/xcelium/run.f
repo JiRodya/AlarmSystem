@@ -114,8 +114,8 @@
 -endlib
 -makelib xcelium_lib/xil_defaultlib \
   "../../../bd/system/ip/system_rst_ps7_0_50M_0/sim/system_rst_ps7_0_50M_0.vhd" \
-  "../../../bd/system/ip/system_axi_gpio_0_0/sim/system_axi_gpio_0_0.vhd" \
   "../../../bd/system/ip/system_axi_gpio_1_0/sim/system_axi_gpio_1_0.vhd" \
+  "../../../bd/system/sim/system.vhd" \
 -endlib
 -makelib xcelium_lib/axi_protocol_converter_v2_1_19 \
   "../../../../AlarmSystem.srcs/sources_1/bd/system/ipshared/c83a/hdl/axi_protocol_converter_v2_1_vl_rfs.v" \
@@ -124,7 +124,8 @@
   "../../../bd/system/ip/system_auto_pc_0/sim/system_auto_pc_0.v" \
 -endlib
 -makelib xcelium_lib/xil_defaultlib \
-  "../../../bd/system/sim/system.vhd" \
+  "../../../bd/system/ip/system_axi_gpio_0_1/sim/system_axi_gpio_0_1.vhd" \
+  "../../../bd/system/ip/system_axi_gpio_1_1/sim/system_axi_gpio_1_1.vhd" \
 -endlib
 -makelib xcelium_lib/xil_defaultlib \
   glbl.v

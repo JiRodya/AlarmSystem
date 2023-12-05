@@ -8,56 +8,67 @@
 #include "xil_cache.h"
 #include "xparameters.h"
 #include <stdio.h> // Include for printf
+#include "data_handle.h"
 
 /************************** Function Declarations ***************************/
 
-u8 bcd2int(u8 data);
-u8 int2bcd(u8 data);
+
+Time Clock_IncrementTime(Time time, int delta_seconds);
+Time Clock_DecrementTime(Time time, int delta_seconds);
 
 /************************** Global Declarations ****************************/
 //PmodRTCC clock;
-
+const char *weekdays[7] = {
+   "Monday",
+   "Tuesday",
+   "Wednesday",
+   "Thursday",
+   "Friday",
+   "Saturday",
+   "Sunday"
+};
+/************************** Core Function Definitions  ****************************/
 // Initialize the clock module
-void Clock_Init() {
+void Clock_Init(u8 mode) {
 
-    RTCC_begin(&clock, XPAR_PMODRTCC_0_AXI_LITE_IIC_BASEADDR, 0x6F);
+    Time time;
 
-    // Start the RTCC clock
-    RTCC_startClock(&clock);
+    RTCC_begin(&clock,XPAR_PMODRTCC_0_AXI_LITE_IIC_BASEADDR, 0x6F);
 
-    // check and enable backup battery
-    if (!RTCC_checkVbat(&clock)) {
-        RTCC_enableVbat(&clock);
+    if(!RTCC_checkVbat(&clock)||mode){
+    	RTCC_stopClock(&clock);
+    	time.second = 0x36;
+		time.minute = 0x44;
+		time.hour   = 0x11;
+		time.ampm   = RTCC_AM;
+		time.day    = 0x02;
+		time.date   = 0x05;
+		time.month  = 0x12;
+		time.year   = 0x23;
+
+		time = Clock_IncrementTime(time, 0); // TEST
+		Clock_SetTime(time, CLOCK);
+
+		RTCC_startClock(&clock);
+		printf("Time set\n");
+		RTCC_enableVbat(&clock);
     }
-
-    // Clear any power-fail flags
+    else{
+    	time = Clock_GetTime(CLOCK);
+    }
+    RTCC_enableVbat(&clock);
     RTCC_clearPWRFAIL(&clock);
+    printf("Clock Init Done\n");
 }
 
 
+/************************** Clock Function Definitions ****************************/
 
-/************************** Function Definitions ****************************/
 
-/** RTCC_Time GetTime(PmodRTCC *InstancePtr, RTCC_Target src)
-**
-**  Parameters:
-**     InstancePtr - the target device to retrieve data from
-**     src         - RTCC_TARGET_RTCC - real-time clock
-**                   RTCC_TARGET_ALM0 - Alarm 0
-**                   RTCC_TARGET_ALM1 - Alarm 1
-**                   RTCC_TARGET_PWRD - power-down time-stamp
-**                   RTCC_TARGET_PWRU - power-up time-stamp
-**
-**  Return Value:
-**     val - the contents of all time registers in the target area
-**
-**  Description:
-**     This function retrieves the contents of one of the Pmod RTCC's time areas
-*/
-Time Clock_GetTime( RTCC_Target src) {
+Time Clock_GetTime( Target src) {
    Time val;
 
-   if (src != RTCC_TARGET_PWRD && src != RTCC_TARGET_PWRU) {
+   if (src != CLOCK_PWRD && src != CLOCK_PWRU) {
       val.second = RTCC_getSec(&clock, src);
    }
 
@@ -68,7 +79,7 @@ Time Clock_GetTime( RTCC_Target src) {
    val.date   = RTCC_getDate(&clock, src);
    val.month  = RTCC_getMonth(&clock, src);
 
-   if (src == RTCC_TARGET_RTCC) {
+   if (src == CLOCK) {
       val.year = RTCC_getYear(&clock);
    } else {
       val.year = 0;
@@ -77,25 +88,6 @@ Time Clock_GetTime( RTCC_Target src) {
    return val;
 }
 
-/** void SetTime(PmodRTCC *InstancePtr, RTCC_Target src, RTCC_Time val)
-**
-**  Parameters:
-**     InstancePtr - the target device to retrieve data from
-**     src         - RTCC_TARGET_RTCC - real-time clock
-**                   RTCC_TARGET_ALM0 - Alarm 0
-**                   RTCC_TARGET_ALM1 - Alarm 1
-**                   RTCC_TARGET_PWRD - power-down time-stamp
-**                   RTCC_TARGET_PWRU - power-up time-stamp
-**     val         - container for the time data to be written into the target
-**                   area's registers
-**
-**  Return Value:
-**     None
-**
-**  Description:
-**     This function writes data into each of the registers of one of the
-**     PmodRTCC's time fields
-*/
 void Clock_SetTime(Time val, Target t) {
 
 
@@ -109,76 +101,60 @@ void Clock_SetTime(Time val, Target t) {
 
 }
 
+void Clock_SetAlarm(Time time){
+	Clock_SetTime(time, MAIN_ALARM ); //set the time
 
-//void Clock_SetAlarm( int hours, int minutes, int seconds) {
-//    Time alarmTime;
-//
-//    // Set the desired alarm time
-//    alarmTime.hour = hours;   // Set hours
-//    alarmTime.minute = minutes; // Set minutes
-//    alarmTime.second = seconds; // Set seconds
-//
-//    // Write the alarm time to the RTCC (using alarm 0)
-//    Clock_SetTime( RTCC_TARGET_ALM0, alarmTime);
-//
-//    // Enable the alarm: setting an alarm to match hours, minutes, and seconds
-//    RTCC_enableAlarm(&clock, RTCC_TARGET_ALM0, RTCC_ALM_POL | RTCC_ALMC2 | RTCC_ALMC1 | RTCC_ALMC0);
-//}
-void Clock_SetAlarm(Time alarmTime) {
-	Time counterAlarm = alarmTime;
-
-	counterAlarm.second = alarmTime.second - 10;
-
-    // Write the alarm time to the RTCC (using alarm 0)
-    Clock_SetTime(alarmTime,RTCC_TARGET_ALM0);
-    Clock_SetTime(counterAlarm, RTCC_TARGET_ALM1);
-
-    // Enable the alarm: setting an alarm to match hours, minutes, and seconds
-    RTCC_enableAlarm(&clock, RTCC_TARGET_ALM0, RTCC_ALM_POL | RTCC_ALMC2 | RTCC_ALMC1 | RTCC_ALMC0);
-    RTCC_enableAlarm(&clock, RTCC_TARGET_ALM1, RTCC_ALM_POL | RTCC_ALMC2 | RTCC_ALMC1 | RTCC_ALMC0);
-
-    activeAlarm = 1;
-    // Print the set alarm time for diagnostic purposes
-    printf("Alarm Set: %02x:%02x:%02x\n", alarmTime.hour, alarmTime.minute, alarmTime.second);
+	//enable the alarm
+	RTCC_enableAlarm(&clock, MAIN_ALARM,
+			ALARM_CONFIG);
 }
 
-u8 bcd2int(u8 bcdValue) {
-    return ((bcdValue / 16) * 10) + (bcdValue % 16);
-}
-
-u8 int2bcd(u8 intValue) {
-    return ((intValue / 10) * 16) + (intValue % 10);
+//----------- Helper Functions
+Time Clock_IncrementTime(Time time, int delta_seconds) {
+   Time result;
+   int temp;
+   result = time;
+   temp = bcd2int(result.second) + delta_seconds;
+   result.second = int2bcd(temp % 60);          // Convert seconds
+   temp = bcd2int(result.minute) + temp / 60;   // Carry seconds -> minutes
+   result.minute = int2bcd(temp % 60);          // Convert minutes
+   temp = bcd2int(result.hour) + temp / 60 - 1; // Carry minutes -> hours
+   result.hour = int2bcd((temp % 12) + 1);      // Convert hours
+   return result;
 }
 
 
-u8 Clock_CheckAlarm(uint8_t alarm_type){
 
-	if(!activeAlarm)
-		return FALSE;
+Time Clock_DecrementTime(Time time, int delta_seconds) {
+    Time result;
+    int temp;
+    result = time;
 
-	else{
-		// Retrieve the current time
-		u8 currentMin = RTCC_getMin(&clock, alarm_type);
-		u8 currentHour = RTCC_getHour(&clock, alarm_type);
+    // Convert BCD to integer
+    temp = bcd2int(result.second) - delta_seconds;
 
-		// Retrieve the alarm time
-		u8 alarmMin = RTCC_getMin(&clock, alarm_type);
-		u8 alarmHour = RTCC_getHour(&clock, alarm_type);
+    // Handle underflow for seconds and carry to minutes
+    while (temp < 0) {
+        temp += 60; // Add 60 seconds and subtract 1 minute
+        result.minute = int2bcd(bcd2int(result.minute) - 1);
+    }
+    result.second = int2bcd(temp % 60); // Convert seconds
 
-		if ((currentHour == alarmHour) && (currentMin == alarmMin)){
-			switch(alarm_type){
-					case MAIN:
-						AFlag0 = 1;
-						break;
-					case WARNING:
-						AFlag1 = 1;
-						break;
-					default:
-						break;
-			}
-		}
-	}
-	return TRUE;
+    // Handle underflow for minutes and carry to hours
+    temp = bcd2int(result.minute);
+    while (temp < 0) {
+        temp += 60; // Add 60 minutes and subtract 1 hour
+        result.hour = int2bcd(bcd2int(result.hour) - 1);
+    }
+    result.minute = int2bcd(temp % 60); // Convert minutes
+
+    // Handle underflow for hours
+    temp = bcd2int(result.hour);
+    if (temp < 0) {
+        temp += 24; // Loop back after 24 hours
+    }
+    result.hour = int2bcd(temp % 24); // Convert hours
+
+    return result;
 }
-
 
