@@ -72,7 +72,8 @@ void IO_SetLedValue(LED_State state, uint8_t counterValue) {
 
         case LED_COUNTER:
             // Display countdown in binary on LEDs
-            ledValue = counterValue;
+        	if(counterValue >= 0)
+        		ledValue = counterValue;
             break;
 
         default:

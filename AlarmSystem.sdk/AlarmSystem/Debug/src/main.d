@@ -24,7 +24,8 @@ src/main.o src/main.o: ../src/main.c \
  ../../AlarmSystem_bsp/ps7_cortexa9_0/include/xscugic_hw.h \
  ../../AlarmSystem_bsp/ps7_cortexa9_0/include/xil_exception.h \
  ../../AlarmSystem_bsp/ps7_cortexa9_0/include/xil_exception.h \
- ../../AlarmSystem_bsp/ps7_cortexa9_0/include/xil_printf.h
+ ../../AlarmSystem_bsp/ps7_cortexa9_0/include/xil_printf.h \
+ C:\X_Projects\AlarmSystem\AlarmSystem.sdk\AlarmSystem\inc/interrupt_handler.h
 
 C:\X_Projects\AlarmSystem\AlarmSystem.sdk\AlarmSystem\inc/clock.h:
 
@@ -77,3 +78,5 @@ C:\X_Projects\AlarmSystem\AlarmSystem.sdk\AlarmSystem\inc/oled.h:
 ../../AlarmSystem_bsp/ps7_cortexa9_0/include/xil_exception.h:
 
 ../../AlarmSystem_bsp/ps7_cortexa9_0/include/xil_printf.h:
+
+C:\X_Projects\AlarmSystem\AlarmSystem.sdk\AlarmSystem\inc/interrupt_handler.h:

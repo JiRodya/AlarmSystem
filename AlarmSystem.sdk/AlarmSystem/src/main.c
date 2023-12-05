@@ -9,6 +9,7 @@
 #include "xscugic.h"
 #include "xil_exception.h"
 #include "xil_printf.h"
+#include "interrupt_handler.h"
 
 
 
@@ -21,6 +22,7 @@ int main() {
 //    PmodRTCC myRTCC;
     PmodOLED myOLED;
     Time currentTime;
+    Time alarm;
 
     // Initialize Clock and OLED
     Clock_Init();
@@ -32,13 +34,27 @@ int main() {
 //    uint8_t m = 58;
 //    uint8_t s = 0x00;
 //    Clock_SetAlarm(h, m, s);
-    Clock_SetAlarm();
+    Time alarmTime;
+//        // Initialize the GIC and enable interrupts for RTCC alarms
+	Init_GIC();
+	Configure_GIC();
+	EnableInts();
+   // Hardcoded alarm time for testing
+   alarmTime.hour = 0x12;   // Set hours (in 24-hour format or BCD as required)
+   alarmTime.minute = 0x35; // Set minutes to 30 minutes past the hour
+   alarmTime.second = 0x00; // Set seconds to 00
+
+    Clock_SetAlarm(alarmTime);
+
     while (1) {
             // Get the current time from RTCC
             currentTime = Clock_GetTime( RTCC_TARGET_RTCC);
+            alarm = Clock_GetTime( RTCC_TARGET_ALM0);
 
-            printf("Raw Time - Hours: %02x, Minutes: %02x, Seconds: %02x\n",
-                           currentTime.hour, currentTime.minute, currentTime.second);
+//            printf("Raw Time - Hours: %02x, Minutes: %02x, Seconds: %02x\n",
+//                           currentTime.hour, currentTime.minute, currentTime.second);
+            printf("Time: %02x:%02x:%02x | Alarm: %02x:%02x:%02x\n",currentTime.hour, currentTime.minute, currentTime.second,
+            		alarm.hour,alarm.minute,alarm.second);
 //            printf("Time - Hours: %d, Minutes:%d, Seconds:%d\n",
 //                                       currentTime.hour, currentTime.minute, currentTime.second);
 //            // Display the time in large format
@@ -54,12 +70,14 @@ int main() {
             OLED_DisplayTime(&myOLED, currentTime.hour, currentTime.minute,currentTime.second);
             OLED_DisplayDate(&myOLED, currentTime.day, currentTime.month,currentTime.year);
 //            OLED_DisplayIcons(&myOLED, ALARM);
-//            u8 alarmFlag = RTCC_checkFlag(&clock, RTCC_TARGET_ALM0);
-//            printf("flag %d",alarmFlag);
-//            if (alarmFlag) {
-//                    // Alarm 0 has been triggered
-//                    xil_printf("ALARM 0 Triggered!\n");
-//            }
+            Clock_CheckAlarm(ALARM);
+            if (RTCC_checkFlag(&clock, RTCC_TARGET_ALM0)) {
+                     // Alarm 0 has been triggered
+                     xil_printf("ALARM 0!!!");
+                     // Disable alarm 0
+                     RTCC_disableAlarm(&clock, RTCC_TARGET_ALM0);
+                     xil_printf("\r\n");
+                  }
             sleep(1);
         }
 

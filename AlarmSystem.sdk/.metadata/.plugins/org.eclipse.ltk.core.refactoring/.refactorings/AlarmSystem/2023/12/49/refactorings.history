@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename resource &apos;AlarmSystem/inc/interrup_handler.h&apos; to &apos;interrupt_handler.h&apos;" description="Rename resource &apos;interrup_handler.h&apos;" flags="7" id="org.eclipse.ltk.core.refactoring.rename.resource" input="inc/interrup_handler.h" name="interrupt_handler.h" stamp="1701747902516" updateReferences="true"/>
+</session>

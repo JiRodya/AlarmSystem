@@ -1,23 +1,8 @@
-03:48:24 **** Auto Build of configuration Debug for project AlarmSystem ****
+00:21:18 **** Incremental Build of configuration Debug for project AlarmSystem ****
 make pre-build main-build 
 a9-linaro-pre-build-step
 ' '
-'Building file: ../src/clock.c'
-'Invoking: ARM v7 gcc compiler'
-arm-none-eabi-gcc -Wall -O0 -g3 -I../../AlarmSystem_bsp/ps7_cortexa9_0/include -I"C:\X_Projects\AlarmSystem\AlarmSystem.sdk\AlarmSystem" -I"C:\X_Projects\AlarmSystem\AlarmSystem.sdk\AlarmSystem\inc" -c -fmessage-length=0 -MT"src/clock.o" -mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -MMD -MP -MF"src/clock.d" -MT"src/clock.o" -o "src/clock.o" "../src/clock.c"
-'Finished building: ../src/clock.c'
-' '
-'Building target: AlarmSystem.elf'
-'Invoking: ARM v7 gcc linker'
-arm-none-eabi-gcc -mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -Wl,-build-id=none -specs=Xilinx.spec -Wl,-T -Wl,../src/lscript.ld -L../../AlarmSystem_bsp/ps7_cortexa9_0/lib -o "AlarmSystem.elf"  ./src/clock.o ./src/interrupt_handler.o ./src/io.o ./src/main.o ./src/oled.o   -Wl,--start-group,-lxil,-lgcc,-lc,--end-group
-'Finished building target: AlarmSystem.elf'
-' '
-'Invoking: ARM v7 Print Size'
-arm-none-eabi-size AlarmSystem.elf  |tee "AlarmSystem.elf.size"
-   text	   data	    bss	    dec	    hex	filename
-  89628	   2736	  23504	 115868	  1c49c	AlarmSystem.elf
-'Finished building: AlarmSystem.elf.size'
-' '
+make: Nothing to be done for 'main-build'.
 
-03:48:24 Build Finished (took 456ms)
+00:21:18 Build Finished (took 90ms)
 
