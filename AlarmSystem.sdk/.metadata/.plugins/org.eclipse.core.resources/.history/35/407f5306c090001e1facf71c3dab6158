@@ -1,0 +1,205 @@
+// Include scutimer header file
+#include "xscugic.h"
+#include "xil_exception.h"
+#include "xil_printf.h"
+#include "interrup_handler.h"
+#include "xparameters.h"
+#include "xscutimer.h"
+
+//my peripherals
+#include "io.h"
+#include "clock.h"
+
+
+/***************************** Variables declaration *******************************/
+XScuGic IntcInstance;		/* Interrupt Controller Instance */
+XScuGic *IntcInstancePtr = &IntcInstance;
+XScuGic_Config *IntcConfig;
+
+// PS Timer related definitions
+XScuTimer_Config *ConfigPtr;
+XScuTimer Timer;		/* Cortex A9 SCU Private Timer Instance */
+XScuTimer *TimerInstancePtr = &Timer;
+
+
+/************************* Forward declaration *******************************/
+static void TimerIntrHandler(void *CallBackRef);
+static void Push_Intr_Handler(void *CallBackRef);
+static void Dip_Intr_Handler(void *CallBackRef);
+
+/*****************************************************************************/
+/**
+*
+* This function initialize interrupt controller
+*
+* @return	XST_SUCCESS if successful, otherwise XST_FAILURE.
+*
+* @note		None.
+*
+******************************************************************************/
+int Init_GIC()
+{
+	//Interrupt Controller initialization
+	IntcConfig = XScuGic_LookupConfig(XPAR_SCUGIC_0_DEVICE_ID);
+	if(!IntcConfig)
+	{
+	   xil_printf("Looking for GIC failed! \r\n");
+	   return XST_FAILURE;
+	}
+
+	int xResult = XScuGic_CfgInitialize(IntcInstancePtr, IntcConfig, IntcConfig->CpuBaseAddress);
+	if(xResult != XST_SUCCESS)
+	{
+	   xil_printf("Init GIC failed! \r\n");
+	   return XST_FAILURE;
+	}
+
+	return XST_SUCCESS;
+}
+
+
+/*****************************************************************************/
+/**
+*
+* This function connect GPIOes to GIC and configure GIC so that interrupts can occur
+*
+* @return	XST_SUCCESS if successful, otherwise XST_FAILURE.
+*
+* @note		None.
+*
+******************************************************************************/
+int Configure_GIC()
+{
+	//Interrupt Priority and Trigger Setup for dip switches
+	XScuGic_SetPriorityTriggerType(IntcInstancePtr, XPAR_FABRIC_SWITCHES_IP2INTC_IRPT_INTR, 0xA0, 0x3);
+	//Connect GPIO Interrupt to handler dipswitch
+	int xResult = XScuGic_Connect(IntcInstancePtr,
+							XPAR_FABRIC_SWITCHES_IP2INTC_IRPT_INTR,
+							(Xil_ExceptionHandler)Dip_Intr_Handler,
+							(void *)&SwitchInstance);
+	if(xResult != XST_SUCCESS)
+	{
+	   xil_printf("Connect dip switch interrupt failed! \r\n");
+	   return XST_FAILURE;
+	}
+
+	//Interrupt Priority and Trigger Setup for push button
+	XScuGic_SetPriorityTriggerType(IntcInstancePtr, XPAR_FABRIC_BUTTONS_IP2INTC_IRPT_INTR, 0x8, 0x3);
+	//Connect GPIO Interrupt to handler for push button
+	xResult = XScuGic_Connect(IntcInstancePtr,
+							XPAR_FABRIC_BUTTONS_IP2INTC_IRPT_INTR,
+							(Xil_ExceptionHandler)Push_Intr_Handler,
+							(void *)&ButtonInstance);
+	if(xResult != XST_SUCCESS)
+	{
+	   xil_printf("Connect push button interrupt failed! \r\n");
+	   return XST_FAILURE;
+	}
+
+
+	//Interrupt Priority and Trigger Setup for timer
+	XScuGic_SetPriorityTriggerType(IntcInstancePtr, XPAR_SCUTIMER_INTR, 0xA8, 0x3);
+	/*
+	 * Connect the interrupt handler that will be called when an
+	 * interrupt for the timer occurs
+	 */
+	xResult = XScuGic_Connect(IntcInstancePtr, XPAR_SCUTIMER_INTR,
+				(Xil_ExceptionHandler)TimerIntrHandler,
+				(void *)TimerInstancePtr);
+	if(xResult != XST_SUCCESS){
+	   xil_printf("Connect timer interrupt failed! \r\n");
+	   return XST_FAILURE;
+	}
+
+	return XST_SUCCESS;
+}
+
+
+/***************************** Handler Functions *******************************/
+static void Dip_Intr_Handler(void *CallBackRef)
+{
+	XGpio *dip_ptr = (XGpio *) CallBackRef;
+
+	xil_printf("Insider Switch ISR! Ha Ha Ha Ha Ha Ha Ha Ha... \r\n");
+
+	// Disable GPIO interrupts
+	// not sure how to setup interrupt mask yet ...
+	XGpio_InterruptDisable(dip_ptr, 0xF);
+	// Ignore additional button presses (not sure about this function yet)
+//	if ((XGpio_InterruptGetStatus(dip_ptr) & INTR_MASK) !=
+//			INTR_MASK) {
+//			return;
+//		}
+
+	int dip_check = XGpio_DiscreteRead(dip_ptr, 1);
+	led_count = dip_check;
+
+	LED_IP_mWriteReg(XPAR_LED_IP_S_AXI_BASEADDR, 0, led_count);
+
+    (void)XGpio_InterruptClear(dip_ptr, 0xF);
+    // Enable GPIO interrupts
+    XGpio_InterruptEnable(dip_ptr, 0xF);
+}
+
+static void Push_Intr_Handler(void *CallBackRef)
+{
+	XGpio *push_ptr = (XGpio *) CallBackRef;
+
+	xil_printf("Insider Button ISR! ... \r\n");
+
+	// Disable GPIO interrupts
+	XGpio_InterruptDisable(push_ptr, 0xF);
+	// Ignore additional button presses
+//	if ((XGpio_InterruptGetStatus(push_ptr) & 0xFF) !=
+//			INTR_MASK) {
+//			return;
+//		}
+
+//	int psb_check = XGpio_DiscreteRead(&push, 1);
+	led_count = 0xAAAA;
+
+	xil_printf("Here again ... \r\n");
+
+	LED_IP_mWriteReg(XPAR_LED_IP_S_AXI_BASEADDR, 0, led_count);
+
+    (void)XGpio_InterruptClear(&push, 0xF);
+    // Enable GPIO interrupts
+    XGpio_InterruptEnable(&push, 0xF);
+}
+
+/*****************************************************************************/
+/**
+*
+* This function is the Interrupt handler for the Timer interrupt of the
+* Timer device. It is called on the expiration of the timer counter in
+* interrupt context.
+*
+* @param	CallBackRef is a pointer to the callback function.
+*
+* @return	None.
+*
+* @note		None.
+*
+******************************************************************************/
+static void TimerIntrHandler(void *CallBackRef)
+{
+	XScuTimer *TimerInstancePtr = (XScuTimer *) CallBackRef;
+
+	/*
+	 * Check if the timer counter has expired, checking is not necessary
+	 * since that's the reason this function is executed, this just shows
+	 * how the callback reference can be used as a pointer to the instance
+	 * of the timer counter that expired, increment a shared variable so
+	 * the main thread of execution can see the timer expired.
+	 */
+	xil_printf("Insider Timer ISR! ... \r\n");
+
+	if (XScuTimer_IsExpired(TimerInstancePtr)) {
+		XScuTimer_ClearInterruptStatus(TimerInstancePtr);
+		LED_IP_mWriteReg(XPAR_LED_IP_S_AXI_BASEADDR, 0, led_count);
+		led_count++;
+//		if (TimerExpired == 3) {
+//			XScuTimer_DisableAutoReload(TimerInstancePtr);
+//		}
+	}
+}

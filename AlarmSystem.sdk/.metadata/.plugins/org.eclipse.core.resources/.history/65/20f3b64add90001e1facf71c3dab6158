@@ -1,0 +1,36 @@
+#include "clock.h"
+
+void Clock_Init(PmodRTCC *rtc, uint8_t setRTC) {
+    RTCC_begin(rtc, XPAR_PMODRTCC_0_AXI_LITE_IIC_BASEADDR, 0x6F);
+
+    if (!RTCC_checkVbat(rtc) || setRTC) {
+        RTCC_stopClock(rtc);
+        // Set the initial time as needed
+        // RTCC_setTime(rtc, /* initial time */);
+        RTCC_startClock(rtc);
+        RTCC_enableVbat(rtc);
+    }
+
+    RTCC_clearPWRFAIL(rtc);
+}
+
+RTCC_Time Clock_GetTime(PmodRTCC *rtc, RTCC_Target src) {
+    RTCC_Time currentTime;
+    currentTime.second = RTCC_getSec(rtc, src);
+    currentTime.minute = RTCC_getMin(rtc, src);
+    currentTime.hour = RTCC_getHour(rtc, src);
+    // Add other fields as necessary
+    return currentTime;
+}
+
+void Clock_SetTime(PmodRTCC *rtc, RTCC_Target dest, RTCC_Time time) {
+    RTCC_setSec(rtc, dest, time.second);
+    RTCC_setMin(rtc, dest, time.minute);
+    RTCC_setHour12(rtc, dest, time.hour, time.ampm);
+    // Set other fields as necessary
+}
+
+void Clock_SetAlarm(PmodRTCC *rtc, RTCC_Target alarmTarget, RTCC_Time alarmTime) {
+    Clock_SetTime(rtc, alarmTarget, alarmTime);
+    RTCC_enableAlarm(rtc, alarmTarget, RTCC_ALM_POL | RTCC_ALMC2 | RTCC_ALMC1 | RTCC_ALMC0);
+}

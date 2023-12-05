@@ -1,0 +1,71 @@
+#include "io.h"
+#include "xscugic.h" // Xilinx GIC driver
+
+#include "xparameters.h"
+#include "xgpio.h"
+#include "xscutimer.h"
+
+
+
+
+// PS Timer related definitions
+XScuTimer_Config *ConfigPtr;
+//XScuTimer Timer;		/* Cortex A9 SCU Private Timer Instance */
+XScuTimer *TimerInstancePtr = &Timer;
+
+
+
+
+#define ONE_TENTH 32500000 // half of the CPU clock speed/10
+
+/*****************************************************************************/
+/**
+*
+* This function initialize dip switches, push buttons and timer.
+*
+* @param	ButtonInstance is a pointer to the instance of Button XGpio.
+* @param	SwitchInstance is a pointer to the instance of Switch XGpio.
+* @param	LedInstance is a pointer to the instance of Leds XGpio.
+* @param	pTimer is a pointer to the XScuTimer.
+*
+* @return	XST_SUCCESS if successful, otherwise XST_FAILURE.
+*
+* @note		None.
+*
+******************************************************************************/
+void IO_Initialize() {
+	int xResult = XGpio_Initialize(&SwitchInstance, XPAR_SWITCHES_DEVICE_ID);
+
+	   if (xResult != XST_SUCCESS){
+			xil_printf("Switches init failed\r\n");
+			return XST_FAILURE;
+	   }
+	   XGpio_SetDataDirection(&SwitchInstance, 1, 0xffffffff);
+
+	   xResult = XGpio_Initialize(&ButtonInstance, XPAR_BUTTONS_DEVICE_ID);
+	   if (xResult != XST_SUCCESS){
+		   xil_printf("Buttons init failed\r\n");
+		   return XST_FAILURE;
+	   }
+
+	   xResult = XGpio_Initialize(&LedInstance, XPAR_ALARM_OUTPUT_DEVICE_ID);
+	   if (xResult != XST_SUCCESS){
+		   xil_printf("LED init failed\r\n");
+		   return XST_FAILURE;
+	   }
+	   XGpio_SetDataDirection(&LedInstance, 1, 0xffffffff);
+
+
+
+	   // Initialize the timer
+	   ConfigPtr = XScuTimer_LookupConfig (XPAR_PS7_SCUTIMER_0_DEVICE_ID);
+	   xResult = XScuTimer_CfgInitialize(&Timer, ConfigPtr, ConfigPtr->BaseAddr);
+	   if (xResult != XST_SUCCESS){
+		  xil_printf("Timer init() failed\r\n");
+		  return XST_FAILURE;
+	   }
+
+	   return XST_SUCCESS;
+}
+
+

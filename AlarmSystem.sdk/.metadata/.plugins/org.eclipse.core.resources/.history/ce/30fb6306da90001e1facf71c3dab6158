@@ -1,0 +1,37 @@
+#include "clock.h"
+#include "xil_printf.h"
+
+void Clock_Init(PmodRTCC *InstancePtr, uint8_t mode) {
+    RTCC_begin(InstancePtr, XPAR_PMODRTCC_0_AXI_LITE_IIC_BASEADDR, 0x6F);
+    // Additional initialization logic as needed
+}
+
+RTCC_Time Clock_GetTime(PmodRTCC *InstancePtr, RTCC_Target src) {
+    RTCC_Time val;
+    val.second = RTCC_getSec(InstancePtr, src);
+    val.minute = RTCC_getMin(InstancePtr, src);
+    val.hour = RTCC_getHour(InstancePtr, src);
+    val.ampm = RTCC_getAmPm(InstancePtr, src);
+    val.day = RTCC_getDay(InstancePtr, src);
+    val.date = RTCC_getDate(InstancePtr, src);
+    val.month = RTCC_getMonth(InstancePtr, src);
+    val.year = src == RTCC_TARGET_RTCC ? RTCC_getYear(InstancePtr) : 0;
+    return val;
+}
+
+void Clock_SetTime(PmodRTCC *InstancePtr, RTCC_Target dest, RTCC_Time val) {
+    RTCC_setSec(InstancePtr, dest, val.second);
+    RTCC_setMin(InstancePtr, dest, val.minute);
+    RTCC_setHour12(InstancePtr, dest, val.hour, val.ampm);
+    RTCC_setDay(InstancePtr, dest, val.day);
+    RTCC_setDate(InstancePtr, dest, val.date);
+    RTCC_setMonth(InstancePtr, dest, val.month);
+    if (dest == RTCC_TARGET_RTCC) {
+        RTCC_setYear(InstancePtr, val.year);
+    }
+}
+
+void Clock_SetAlarm(PmodRTCC *InstancePtr, RTCC_Target dest, RTCC_Time alarmTime) {
+    Clock_SetTime(InstancePtr, dest, alarmTime);
+    RTCC_enableAlarm(InstancePtr, dest, RTCC_ALM_POL | RTCC_ALMC2 | RTCC_ALMC1 | RTCC_ALMC0);
+}

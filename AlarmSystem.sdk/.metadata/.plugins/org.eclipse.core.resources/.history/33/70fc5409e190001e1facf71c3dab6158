@@ -1,0 +1,22 @@
+#ifndef CLOCK_H
+#define CLOCK_H
+
+#include <stdio.h>
+#include <xil_types.h>
+
+// Function to initialize the clock
+void RTCC_begin(u32 iic_baseaddr, u8 device_address);
+
+// Function to set the clock time
+void setClockTime(u8 hour, u8 minute, u8 second);
+
+// Function to set an alarm
+void setAlarm(u8 hour, u8 minute, u8 second);
+
+// Function to check if the alarm has been triggered
+int isAlarmTriggered();
+
+// Function to handle alarm trigger (you can customize this)
+void handleAlarm();
+
+#endif /* CLOCK_H */

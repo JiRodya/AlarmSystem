@@ -1,0 +1,84 @@
+#include "clock.h"
+#include "oled.h"
+#include <stdio.h>
+#include "sleep.h"
+#include "xparameters.h"
+//#include <unistd.h>
+// Include scutimer header file
+#include "xscugic.h"
+#include "xil_exception.h"
+#include "xil_printf.h"
+#include "xscutimer.h"
+
+
+static int Init_GIC()
+{
+	//Interrupt Controller initialization
+	IntcConfig = XScuGic_LookupConfig(XPAR_SCUGIC_0_DEVICE_ID);
+	if(!IntcConfig)
+	{
+	   xil_printf("Looking for GIC failed! \r\n");
+	   return XST_FAILURE;
+	}
+
+	int xResult = XScuGic_CfgInitialize(IntcInstancePtr, IntcConfig, IntcConfig->CpuBaseAddress);
+	if(xResult != XST_SUCCESS)
+	{
+	   xil_printf("Init GIC failed! \r\n");
+	   return XST_FAILURE;
+	}
+
+	return XST_SUCCESS;
+}
+
+int main() {
+    PmodRTCC myRTCC;
+    PmodOLED myOLED;
+    Time currentTime;
+
+    // Initialize Clock and OLED
+    Clock_Init(&myRTCC);
+    OLED_Initialize(&myOLED, XPAR_PMODOLED_0_AXI_LITE_GPIO_BASEADDR,
+                    XPAR_PMODOLED_0_AXI_LITE_SPI_BASEADDR, 0, 0); // Assuming normal orientation and no inversion
+
+    OLED_DisplayIcons(&myOLED, ALARM);
+    Time lastTime = {0, 0, 0, 0, 0, 0};
+    while (1) {
+            // Get the current time from RTCC
+            currentTime = Clock_GetTime(&myRTCC, RTCC_TARGET_RTCC);
+
+            printf("Raw Time - Hours: %02x, Minutes: %02x, Seconds: %02x\n",
+                           currentTime.hour, currentTime.minute, currentTime.second);
+//            // Display the time in large format
+//            OLED_DisplayLargeTime(&myOLED, currentTime.hour, currentTime.minute, currentTime.second);
+//
+//            // Display the date
+//            OLED_DisplayDate(&myOLED, currentTime.date, currentTime.month, currentTime.year);
+
+//            OLED_DisplayDateTime(&myOLED, currentTime.hour,currentTime.minute, currentTime.second,currentTime.day, currentTime.month,currentTime.year);
+
+
+            // Add a delay as needed (e.g., to update the time every second)
+            OLED_DisplayTime(&myOLED, currentTime.hour, currentTime.minute,currentTime.second);
+            OLED_DisplayDate(&myOLED, currentTime.day, currentTime.month,currentTime.year);
+//            OLED_DisplayIcons(&myOLED, ALARM);
+            sleep(1);
+        }
+
+        // Clean up, if necessary
+        OLED_Terminate(&myOLED);
+
+    return 0;
+}
+
+/*****************************************************************************/
+/**
+*
+* This function initialize interrupt controller
+*
+* @return	XST_SUCCESS if successful, otherwise XST_FAILURE.
+*
+* @note		None.
+*
+******************************************************************************/
+

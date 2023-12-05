@@ -1,0 +1,107 @@
+#include "io.h"
+#include "xscugic.h" // Xilinx GIC driver
+
+#include "xparameters.h"
+#include "xgpio.h"
+#include "xscutimer.h"
+// Include scutimer header file
+#include "xscugic.h"
+#include "xil_exception.h"
+#include "xil_printf.h"
+
+// Global variables for device instances
+static XGpio LedInstance;
+static XGpio ButtonInstance;
+static XGpio SwitchInstance;
+
+// PS Timer related definitions
+XScuTimer_Config *ConfigPtr;
+XScuTimer Timer;		/* Cortex A9 SCU Private Timer Instance */
+XScuTimer *TimerInstancePtr = &Timer;
+
+
+// interrupt related definitions
+XScuGic IntcInstance;		/* Interrupt Controller Instance */
+XScuGic *IntcInstancePtr = &IntcInstance;
+XScuGic_Config *IntcConfig;
+
+#define ONE_TENTH 32500000 // half of the CPU clock speed/10
+
+// Function to initialize IO
+void IO_Initialize() {
+	int xResult = XGpio_Initialize(&SwitchInstance, XPAR_SWITCHES_DEVICE_ID);
+
+	   if (xResult != XST_SUCCESS){
+			xil_printf("Switch init failed\r\n");
+			return XST_FAILURE;
+	   }
+	   XGpio_SetDataDirection(&dip, 1, 0xffffffff);
+
+	   xResult = XGpio_Initialize(&ButtonInstance, XPAR_BUTTONS_DEVICE_ID);
+	   if (xResult != XST_SUCCESS){
+		   xil_printf("Push buttone init failed\r\n");
+		   return XST_FAILURE;
+	   }
+	   XGpio_SetDataDirection(&push, 1, 0xffffffff);
+
+	   XPAR_ALARM_OUTPUT_DEVICE_ID
+
+	   // Initialize the timer
+	   ConfigPtr = XScuTimer_LookupConfig (XPAR_PS7_SCUTIMER_0_DEVICE_ID);
+	   xResult = XScuTimer_CfgInitialize(&Timer, ConfigPtr, ConfigPtr->BaseAddr);
+	   if (xResult != XST_SUCCESS){
+		  xil_printf("Timer init() failed\r\n");
+		  return XST_FAILURE;
+	   }
+
+	   return XST_SUCCESS;
+}
+
+// Function to set LED value
+void IO_SetLedValue(uint8_t value) {
+    XGpio_DiscreteWrite(&LedInstance, LED_CHANNEL, value);
+}
+
+// Function to read button value
+uint8_t IO_ReadButtonValue() {
+    return XGpio_DiscreteRead(&ButtonInstance, BUTTON_CHANNEL);
+}
+
+// Function to read switch value
+uint8_t IO_ReadSwitchValue() {
+    return XGpio_DiscreteRead(&SwitchInstance, SWITCH_CHANNEL);
+}
+
+// Function to enable interrupts
+void IO_EnableInterrupts() {
+    // Initialize the interrupt controller driver
+//    XScuGic_Initialize(&IntcInstance, INTC_DEVICE_ID);
+
+    // Call to IO_RegisterInterruptHandler() for buttons and switches
+    // ...
+}
+
+// Function to disable interrupts
+void IO_DisableInterrupts() {
+    // Disable interrupts in the interrupt controller
+    // ...
+}
+
+// Function to register interrupt handlers
+void IO_RegisterInterruptHandler(XInterruptHandler handler, void *data) {
+    // Connect the interrupt handler
+//    XScuGic_Connect(&IntcInstance, INTERRUPT_ID, handler, data);
+
+    // Enable the interrupt in the controller
+//    XScuGic_Enable(&IntcInstance, INTERRUPT_ID);
+}
+
+// Button interrupt handler
+void IO_ButtonInterruptHandler(void *InstancePtr) {
+    // Your button interrupt logic
+}
+
+// Switch interrupt handler
+void IO_SwitchInterruptHandler(void *InstancePtr) {
+    // Your switch interrupt logic
+}

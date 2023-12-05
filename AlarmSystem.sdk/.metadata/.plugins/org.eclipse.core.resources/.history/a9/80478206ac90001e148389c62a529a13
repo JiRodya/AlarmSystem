@@ -1,0 +1,111 @@
+#include "clock.h"
+#include "oled.h"
+#include <stdio.h>
+#include "sleep.h"
+//#include <unistd.h>
+
+
+//void OLED_DisplayDateTime(PmodOLED *InstancePtr, int hour, int minute, int second, int day, int month, int year) {
+//    char timeBuffer[20];
+//    char dateBuffer[20];
+//    const char *months[12] = {"Jan", "Feb", "Mar", "Apr", "May", "Jun",
+//                              "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
+//
+//    // Format the time as HH:MM:SS
+//    snprintf(timeBuffer, sizeof(timeBuffer), "%02x:%02x:%02x", hour, minute, second);
+//
+//    // Format the date as DD Mon, YYYY (e.g., 11 Nov, 2023)
+//    snprintf(dateBuffer, sizeof(dateBuffer), "%02x %s, %04x", day, months[month - 1], year);
+//
+//    // Display the time
+//    OLED_Clear(InstancePtr);
+//    OLED_SetCursor(InstancePtr, 0, 0);
+//    OLED_PutString(InstancePtr, timeBuffer);
+//
+//    // Display the date
+//    OLED_SetCursor(InstancePtr, 0, 2); // Move down to display the date
+//    OLED_PutString(InstancePtr, dateBuffer);
+//
+//    OLED_Update(InstancePtr);
+//}
+//
+//void OLED_DisplayLargeTime(PmodOLED *InstancePtr, int hour, int minute, int second) {
+//    char buffer[5];
+//
+//    // Clear the display
+//    OLED_Clear(InstancePtr);
+//
+//    // Display hour
+//    snprintf(buffer, sizeof(buffer), "%02x:", hour);
+//    OLED_SetCursor(InstancePtr, 0, 0);
+//    OLED_PutString(InstancePtr, buffer);
+//
+//    // Display minute
+//    snprintf(buffer, sizeof(buffer), "%02x:", minute);
+//    OLED_SetCursor(InstancePtr, 4, 0); // Adjust position as needed
+//    OLED_PutString(InstancePtr, buffer);
+//
+//    // Display second
+//    snprintf(buffer, sizeof(buffer), "%02x", second);
+//    OLED_SetCursor(InstancePtr, 8, 0); // Adjust position as needed
+//    OLED_PutString(InstancePtr, buffer);
+//
+//    OLED_Update(InstancePtr);
+//}
+//
+//
+//void OLED_DisplayDate(PmodOLED *InstancePtr, int day, int month, int year) {
+//    char dateBuffer[20];
+//    const char *months[12] = {"Jan", "Feb", "Mar", "Apr", "May", "Jun",
+//                              "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
+//
+//    // Format the date
+//    snprintf(dateBuffer, sizeof(dateBuffer), "%02x %s, %04x", day, months[month - 1], year);
+//
+//    // Display the date
+//    OLED_SetCursor(InstancePtr, 0, 3); // Adjust for position
+//    OLED_PutString(InstancePtr, dateBuffer);
+//
+//    OLED_Update(InstancePtr);
+//}
+
+
+int main() {
+    PmodRTCC myRTCC;
+    PmodOLED myOLED;
+    Time currentTime;
+
+    // Initialize Clock and OLED
+    Clock_Init(&myRTCC);
+    OLED_Initialize(&myOLED, XPAR_PMODOLED_0_AXI_LITE_GPIO_BASEADDR,
+                    XPAR_PMODOLED_0_AXI_LITE_SPI_BASEADDR, 0, 0); // Assuming normal orientation and no inversion
+
+    OLED_DisplayIcons(&myOLED, ALARM);
+    Time lastTime = {0, 0, 0, 0, 0, 0};
+    while (1) {
+            // Get the current time from RTCC
+            currentTime = Clock_GetTime(&myRTCC, RTCC_TARGET_RTCC);
+
+            printf("Raw Time - Hours: %02x, Minutes: %02x, Seconds: %02x\n",
+                           currentTime.hour, currentTime.minute, currentTime.second);
+//            // Display the time in large format
+//            OLED_DisplayLargeTime(&myOLED, currentTime.hour, currentTime.minute, currentTime.second);
+//
+//            // Display the date
+//            OLED_DisplayDate(&myOLED, currentTime.date, currentTime.month, currentTime.year);
+
+//            OLED_DisplayDateTime(&myOLED, currentTime.hour,currentTime.minute, currentTime.second,currentTime.day, currentTime.month,currentTime.year);
+
+
+            // Add a delay as needed (e.g., to update the time every second)
+            OLED_DisplayTime(&myOLED, currentTime.hour, currentTime.minute,currentTime.second);
+            OLED_DisplayDate(&myOLED, currentTime.day, currentTime.month,currentTime.year);
+//            OLED_DisplayIcons(&myOLED, ALARM);
+            sleep(1);
+        }
+
+        // Clean up, if necessary
+        OLED_Terminate(&myOLED);
+
+    return 0;
+}

@@ -1,0 +1,21 @@
+#ifndef CLOCK_H
+#define CLOCK_H
+
+#include <xil_types.h>
+
+// Function to initialize the clock
+void clock_init(u32 base_addr, u8 device_address);
+
+// Function to set the time on the clock
+void clock_set_time(u32 base_addr, u8 hour, u8 minute, u8 second);
+
+// Function to read the time from the clock
+void clock_get_time(u32 base_addr, u8 *hour, u8 *minute, u8 *second);
+
+// Function to set the alarm time on the clock
+void clock_set_alarm(u32 base_addr, u8 alarm_hour, u8 alarm_minute, u8 alarm_second);
+
+// Function to check if the alarm has triggered
+int clock_check_alarm(u32 base_addr);
+
+#endif // CLOCK_H

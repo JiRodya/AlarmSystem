@@ -1,0 +1,70 @@
+#include "clock.h"
+#include "oled.h"
+#include <stdio.h>
+#include "sleep.h"
+#include "xparameters.h"
+//#include <unistd.h>
+
+// Include scutimer header file
+#include "xscugic.h"
+#include "xil_exception.h"
+#include "xil_printf.h"
+
+
+
+
+#define ONE_TENTH 32500000 // half of the CPU clock speed/10
+
+
+
+int main() {
+    PmodRTCC myRTCC;
+    PmodOLED myOLED;
+    Time currentTime;
+
+    // Initialize Clock and OLED
+    Clock_Init();
+    // Initialization of OLED...
+
+    // Get the current time from RTCC
+    currentTime = Clock_GetTime(RTCC_TARGET_RTCC);
+
+    // Set alarm for one minute in the future
+    Time alarmTime = currentTime;
+    int minuteDecimal = bcd2int(currentTime.minute) + 1;
+    if (minuteDecimal >= 60) {
+        alarmTime.hour = int2bcd(bcd2int(currentTime.hour) + 1);
+        minuteDecimal = 0;
+    }
+    alarmTime.minute = int2bcd(minuteDecimal);
+
+    // Set the alarm
+    Clock_SetAlarm(alarmTime.hour, alarmTime.minute, alarmTime.second);
+
+    while (1) {
+        // Display current time
+        printf("Raw Time - Hours: %02x, Minutes: %02x, Seconds: %02x\n",
+               currentTime.hour, currentTime.minute, currentTime.second);
+
+        // Check the alarm flag
+        u8 alarmFlag = RTCC_checkFlag(&myRTCC, RTCC_TARGET_ALM0);
+        printf("Alarm Flag: %d\n", alarmFlag);
+        if (alarmFlag) {
+            printf("ALARM Triggered!\n");
+            // Disable the alarm if needed
+        }
+
+        // Displaying on OLED and other operations...
+
+        sleep(1);
+    }
+
+    // Clean up, if necessary
+    // OLED_Terminate(&myOLED);
+
+    return 0;
+}
+
+
+
+

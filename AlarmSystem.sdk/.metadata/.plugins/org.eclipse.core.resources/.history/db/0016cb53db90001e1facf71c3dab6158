@@ -1,0 +1,23 @@
+#ifndef CLOCK_H
+#define CLOCK_H
+
+#include "PmodRTCC.h"
+
+typedef struct RTCC_Time {
+    uint8_t second;
+    uint8_t minute;
+    uint8_t hour;
+    uint8_t ampm; // 0 for AM, 1 for PM
+    uint8_t day;  // Day of the week
+    uint8_t date;
+    uint8_t month;
+    uint8_t year;
+} RTCC_Time;
+
+// Function Declarations
+void Clock_Init(PmodRTCC *InstancePtr, uint8_t mode);
+RTCC_Time Clock_GetTime(PmodRTCC *InstancePtr, RTCC_Target src);
+void Clock_SetTime(PmodRTCC *InstancePtr, RTCC_Target dest, RTCC_Time val);
+void Clock_SetAlarm(PmodRTCC *InstancePtr, RTCC_Target dest, RTCC_Time alarmTime);
+
+#endif // CLOCK_H

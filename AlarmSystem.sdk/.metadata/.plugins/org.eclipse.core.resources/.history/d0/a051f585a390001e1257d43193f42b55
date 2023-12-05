@@ -1,0 +1,80 @@
+#include "io.h"
+#include "xscugic.h" // Xilinx GIC driver
+
+#include "xparameters.h"
+#include "xgpio.h"
+#include "xscutimer.h"
+// Include scutimer header file
+#include "xscugic.h"
+#include "xil_exception.h"
+#include "xil_printf.h"
+
+// Global variables for device instances
+static XGpio LedInstance;
+static XGpio ButtonInstance;
+static XGpio SwitchInstance;
+static XScuGic IntcInstance; // Interrupt Controller Instance
+
+// Function to initialize IO
+void IO_Initialize() {
+    // Initialize LED GPIO instance
+//    XGpio_Initialize(&LedInstance, LED_DEVICE_ID);
+    XGpio_SetDataDirection(&LedInstance, LED_CHANNEL, 0x00); // All LEDs output
+
+    // Initialize Button GPIO instance
+//    XGpio_Initialize(&ButtonInstance, BUTTON_DEVICE_ID);
+    XGpio_SetDataDirection(&ButtonInstance, BUTTON_CHANNEL, 0xFF); // All buttons input
+
+    // Initialize Switch GPIO instance
+//    XGpio_Initialize(&SwitchInstance, SWITCH_DEVICE_ID);
+    XGpio_SetDataDirection(&SwitchInstance, SWITCH_CHANNEL, 0xFF); // All switches input
+}
+
+// Function to set LED value
+void IO_SetLedValue(uint8_t value) {
+    XGpio_DiscreteWrite(&LedInstance, LED_CHANNEL, value);
+}
+
+// Function to read button value
+uint8_t IO_ReadButtonValue() {
+    return XGpio_DiscreteRead(&ButtonInstance, BUTTON_CHANNEL);
+}
+
+// Function to read switch value
+uint8_t IO_ReadSwitchValue() {
+    return XGpio_DiscreteRead(&SwitchInstance, SWITCH_CHANNEL);
+}
+
+// Function to enable interrupts
+void IO_EnableInterrupts() {
+    // Initialize the interrupt controller driver
+//    XScuGic_Initialize(&IntcInstance, INTC_DEVICE_ID);
+
+    // Call to IO_RegisterInterruptHandler() for buttons and switches
+    // ...
+}
+
+// Function to disable interrupts
+void IO_DisableInterrupts() {
+    // Disable interrupts in the interrupt controller
+    // ...
+}
+
+// Function to register interrupt handlers
+void IO_RegisterInterruptHandler(XInterruptHandler handler, void *data) {
+    // Connect the interrupt handler
+//    XScuGic_Connect(&IntcInstance, INTERRUPT_ID, handler, data);
+
+    // Enable the interrupt in the controller
+//    XScuGic_Enable(&IntcInstance, INTERRUPT_ID);
+}
+
+// Button interrupt handler
+void IO_ButtonInterruptHandler(void *InstancePtr) {
+    // Your button interrupt logic
+}
+
+// Switch interrupt handler
+void IO_SwitchInterruptHandler(void *InstancePtr) {
+    // Your switch interrupt logic
+}

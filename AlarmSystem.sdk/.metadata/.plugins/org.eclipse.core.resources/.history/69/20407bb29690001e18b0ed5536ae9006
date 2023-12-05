@@ -1,0 +1,12 @@
+#ifndef OLED_H
+#define OLED_h
+
+#include <stdint.h>
+#include "PmodOLED.h"
+
+void OLED_Initialize(PmodOLED *InstancePtr, u32 GPIO_Address, u32 SPI_Address, u8 orientation, u8 invert);
+void OLED_DisplayTime(PmodOLED *InstancePtr, int hour, int minute, int second );
+void OLED_ClearDisplay(PmodOLED *InstancePtr);
+void OLED_Terminate(PmodOLED *InstancePtr);
+
+#endif

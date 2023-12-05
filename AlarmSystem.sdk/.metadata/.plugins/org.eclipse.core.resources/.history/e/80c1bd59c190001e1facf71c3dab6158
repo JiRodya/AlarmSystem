@@ -1,0 +1,29 @@
+#ifndef IO_H
+#define IO_H
+
+#include <stdint.h>
+#include "xgpio.h" // Assuming use of Xilinx GPIO driver
+
+// Global variables for device instances
+static XGpio LedInstance;
+static XGpio ButtonInstance;
+static XGpio SwitchInstance;
+
+// PS Timer related definitions
+XScuTimer_Config *ConfigPtr;
+XScuTimer Timer;		/* Cortex A9 SCU Private Timer Instance */
+XScuTimer *TimerInstancePtr = &Timer;
+
+
+// Function prototypes
+void IO_Initialize();
+void IO_SetLedValue(uint8_t value);
+uint8_t IO_ReadButtonValue();
+uint8_t IO_ReadSwitchValue();
+void IO_EnableInterrupts();
+void IO_DisableInterrupts();
+void IO_RegisterInterruptHandler(XInterruptHandler handler, void *data);
+void IO_ButtonInterruptHandler(void *InstancePtr);
+void IO_SwitchInterruptHandler(void *InstancePtr);
+
+#endif // IO_H

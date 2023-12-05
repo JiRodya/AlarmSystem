@@ -1,0 +1,42 @@
+#include "clock.h"
+#include "xil_io.h"
+
+// Register offsets for the clock
+#define CLOCK_HOUR_REG_OFFSET    0x00
+#define CLOCK_MINUTE_REG_OFFSET  0x01
+#define CLOCK_SECOND_REG_OFFSET  0x02
+#define CLOCK_ALARM_HOUR_REG_OFFSET    0x03
+#define CLOCK_ALARM_MINUTE_REG_OFFSET  0x04
+#define CLOCK_ALARM_SECOND_REG_OFFSET  0x05
+#define CLOCK_ALARM_STATUS_REG_OFFSET   0x06
+
+void clock_init(u32 base_addr, u8 device_address) {
+    // Initialize the clock with the provided device address
+    Xil_Out8(base_addr + CLOCK_HOUR_REG_OFFSET, device_address);
+}
+
+void clock_set_time(u32 base_addr, u8 hour, u8 minute, u8 second) {
+    // Set the time on the clock
+    Xil_Out8(base_addr + CLOCK_HOUR_REG_OFFSET, hour);
+    Xil_Out8(base_addr + CLOCK_MINUTE_REG_OFFSET, minute);
+    Xil_Out8(base_addr + CLOCK_SECOND_REG_OFFSET, second);
+}
+
+void clock_get_time(u32 base_addr, u8 *hour, u8 *minute, u8 *second) {
+    // Read the time from the clock
+    *hour = Xil_In8(base_addr + CLOCK_HOUR_REG_OFFSET);
+    *minute = Xil_In8(base_addr + CLOCK_MINUTE_REG_OFFSET);
+    *second = Xil_In8(base_addr + CLOCK_SECOND_REG_OFFSET);
+}
+
+void clock_set_alarm(u32 base_addr, u8 alarm_hour, u8 alarm_minute, u8 alarm_second) {
+    // Set the alarm time on the clock
+    Xil_Out8(base_addr + CLOCK_ALARM_HOUR_REG_OFFSET, alarm_hour);
+    Xil_Out8(base_addr + CLOCK_ALARM_MINUTE_REG_OFFSET, alarm_minute);
+    Xil_Out8(base_addr + CLOCK_ALARM_SECOND_REG_OFFSET, alarm_second);
+}
+
+int clock_check_alarm(u32 base_addr) {
+    // Check if the alarm has triggered
+    return Xil_In8(base_addr + CLOCK_ALARM_STATUS_REG_OFFSET);
+}

@@ -1,0 +1,32 @@
+#include "clock.h"
+
+PmodRTCC clockDevice;
+
+void Clock_Init() {
+    // Initialize the PmodRTCC module
+    RTCC_begin(&clockDevice, XPAR_PMODRTCC_0_AXI_LITE_IIC_BASEADDR, 0x6F);
+
+    // Enable the backup battery (VBAT)
+    RTCC_enableVbat(&clockDevice);
+}
+
+Time Clock_GetTime(RTCC_Target target) {
+    // Get the time from the clock
+    return GetTime(&clockDevice, target);
+}
+
+void Clock_SetAlarm0(Time alarmTime) {
+    // Set an alarm on Alarm 0
+    SetTime(&clockDevice, RTCC_TARGET_ALM0, alarmTime);
+    // Enable the alarm
+    RTCC_enableAlarm(&clockDevice, RTCC_TARGET_ALM0,
+        RTCC_ALM_POL | RTCC_ALMC2 | RTCC_ALMC1 | RTCC_ALMC0);
+}
+
+void Clock_SetAlarm1(Time alarmTime) {
+    // Set an alarm on Alarm 1
+    SetTime(&clockDevice, RTCC_TARGET_ALM1, alarmTime);
+    // Enable the alarm
+    RTCC_enableAlarm(&clockDevice, RTCC_TARGET_ALM1,
+        RTCC_ALM_POL | RTCC_ALMC2 | RTCC_ALMC1 | RTCC_ALMC0);
+}

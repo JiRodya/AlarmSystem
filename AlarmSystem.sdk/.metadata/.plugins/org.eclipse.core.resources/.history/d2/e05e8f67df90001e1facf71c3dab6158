@@ -1,0 +1,85 @@
+#include "clock.h"
+#include "xil_printf.h"
+#include "xil_cache.h"
+#include "xparameters.h"
+
+PmodRTCC clockDevice;
+
+void Clock_Init() {
+    EnableCaches();
+
+    RTCC_begin(&clockDevice, XPAR_PMODRTCC_0_AXI_LITE_IIC_BASEADDR, 0x6F);
+
+    // Set up Alarm 0 for 30 seconds from now
+    RTCC_Time alarmTime0;
+    alarmTime0.second = 0;
+    alarmTime0.minute = 0;
+    alarmTime0.hour = 0;
+    alarmTime0.ampm = RTCC_AM;
+    alarmTime0.day = 0;
+    alarmTime0.date = 0;
+    alarmTime0.month = 0;
+    alarmTime0.year = 0;
+
+    alarmTime0 = IncrementTime(alarmTime0, 30);
+    RTCC_setAlarm(&clockDevice, RTCC_ALARM_0, alarmTime0);
+
+    // Set up Alarm 1 for 1 minute from now
+    RTCC_Time alarmTime1;
+    alarmTime1.second = 0;
+    alarmTime1.minute = 0;
+    alarmTime1.hour = 0;
+    alarmTime1.ampm = RTCC_AM;
+    alarmTime1.day = 0;
+    alarmTime1.date = 0;
+    alarmTime1.month = 0;
+    alarmTime1.year = 0;
+
+    alarmTime1 = IncrementTime(alarmTime1, 60);
+    RTCC_setAlarm(&clockDevice, RTCC_ALARM_1, alarmTime1);
+
+    // Enable both alarms
+    RTCC_enableAlarm(&clockDevice, RTCC_ALARM_0);
+    RTCC_enableAlarm(&clockDevice, RTCC_ALARM_1);
+
+    // Start the clock
+    RTCC_startClock(&clockDevice);
+}
+
+void Clock_CheckAlarms() {
+    // Check if alarm 0 is triggered
+    if (RTCC_checkFlag(&clockDevice, RTCC_TARGET_ALM0)) {
+        // Alarm 0 has been triggered
+        xil_printf("ALARM 0 Triggered!\n");
+        // You can add your logic for Alarm 0 handling here
+        // For example, turning on an LED, triggering an action, etc.
+    }
+
+    // Check if alarm 1 is triggered
+    if (RTCC_checkFlag(&clockDevice, RTCC_TARGET_ALM1)) {
+        // Alarm 1 has been triggered
+        xil_printf("ALARM 1 Triggered!\n");
+        // You can add your logic for Alarm 1 handling here
+        // For example, sending a notification, logging data, etc.
+    }
+}
+
+RTCC_Time IncrementTime(RTCC_Time time, int delta_seconds) {
+    // Function to increment time by delta_seconds
+    // Implement this function according to your requirements
+    // This is just a placeholder
+    return time;
+}
+
+void EnableCaches() {
+#ifdef __MICROBLAZE__
+#ifdef XPAR_MICROBLAZE_USE_ICACHE
+    Xil_ICacheEnable();
+#endif
+#ifdef XPAR_MICROBLAZE_USE_DCACHE
+    Xil_DCacheEnable();
+#endif
+#endif
+}
+
+#endif

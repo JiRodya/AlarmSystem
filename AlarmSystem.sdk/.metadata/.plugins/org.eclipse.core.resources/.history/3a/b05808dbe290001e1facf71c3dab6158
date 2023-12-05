@@ -1,0 +1,70 @@
+#include "xparameters.h"
+#include "xiicps.h"
+#include "xil_io.h"
+#include "xscugic.h"
+#include "clock.h"
+
+
+
+#define IIC_DEVICE_ID PMODRTCC_IIC_ID
+
+static XIicPs IicInstance;
+
+// Function to initialize the PMODRTCC module
+int PMODRTCC_Init() {
+    XIicPs_Config *IicConfig;
+    int Status;
+
+    // Initialize the IIC driver
+    IicConfig = XIicPs_LookupConfig(IIC_DEVICE_ID);
+    if (IicConfig == NULL) {
+        return XST_FAILURE;
+    }
+
+    Status = XIicPs_CfgInitialize(&IicInstance, IicConfig, IicConfig->BaseAddress);
+    if (Status != XST_SUCCESS) {
+        return XST_FAILURE;
+    }
+
+    // Set the IIC clock frequency
+    XIicPs_SetSClk(&IicInstance, IicConfig->InputClockHz, 100000);
+
+    return XST_SUCCESS;
+}
+
+// Function to set the alarm time
+void PMODRTCC_SetAlarm(u8 hours, u8 minutes, u8 seconds) {
+    u8 alarmData[4];
+
+    // Construct alarm data
+    alarmData[0] = seconds;
+    alarmData[1] = minutes;
+    alarmData[2] = hours;
+    alarmData[3] = 0; // Days (unused)
+
+    // Write alarm data to PMODRTCC
+    XIicPs_Write(&IicInstance, PMODRTCC_IIC_ADDR, alarmData, sizeof(alarmData));
+}
+
+// Function to check if the alarm is triggered
+int PMODRTCC_IsAlarmTriggered() {
+    u8 controlReg;
+
+    // Read the control register
+    XIicPs_Read(&IicInstance, PMODRTCC_IIC_ADDR, PMODRTCC_CONTROL_REG, &controlReg, sizeof(controlReg));
+
+    // Check if the alarm is enabled and triggered
+    return (controlReg & PMODRTCC_ALARM_ENABLE_MASK);
+}
+
+// Function to get the current time
+void PMODRTCC_GetTime(u8 *hours, u8 *minutes, u8 *seconds) {
+    u8 timeData[3];
+
+    // Read time data from PMODRTCC
+    XIicPs_Read(&IicInstance, PMODRTCC_IIC_ADDR, PMODRTCC_SECONDS_REG, timeData, sizeof(timeData));
+
+    *seconds = timeData[0];
+    *minutes = timeData[1];
+    *hours = timeData[2];
+}
