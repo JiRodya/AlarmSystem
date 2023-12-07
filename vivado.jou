@@ -1,0 +1,14 @@
+#-----------------------------------------------------------
+# Vivado v2019.1 (64-bit)
+# SW Build 2552052 on Fri May 24 14:49:42 MDT 2019
+# IP Build 2548770 on Fri May 24 18:01:18 MDT 2019
+# Start of session at: Wed Dec  6 10:47:30 2023
+# Process ID: 8968
+# Current directory: C:/git/AlarmSystem
+# Command line: vivado.exe -gui_launcher_event rodinguilauncherevent8032 C:\git\AlarmSystem\AlarmSystem.xpr
+# Log file: C:/git/AlarmSystem/vivado.log
+# Journal file: C:/git/AlarmSystem\vivado.jou
+#-----------------------------------------------------------
+start_gui
+open_project C:/git/AlarmSystem/AlarmSystem.xpr
+update_compile_order -fileset sources_1

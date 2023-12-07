@@ -1,8 +1,8 @@
 --Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
 ----------------------------------------------------------------------------------
 --Tool Version: Vivado v.2019.1 (win64) Build 2552052 Fri May 24 14:49:42 MDT 2019
---Date        : Fri Dec  1 19:15:41 2023
---Host        : DESKTOP-9DRVH73 running 64-bit major release  (build 9200)
+--Date        : Thu Dec  7 04:11:06 2023
+--Host        : Diane-Laptop running 64-bit major release  (build 9200)
 --Command     : generate_target system.bd
 --Design      : system
 --Purpose     : IP block netlist
@@ -2135,7 +2135,6 @@ architecture STRUCTURE of system is
     M_AXI_GP0_RDATA : in STD_LOGIC_VECTOR ( 31 downto 0 );
     IRQ_F2P : in STD_LOGIC_VECTOR ( 0 to 0 );
     Core0_nFIQ : in STD_LOGIC;
-    Core0_nIRQ : in STD_LOGIC;
     FCLK_CLK0 : out STD_LOGIC;
     FCLK_RESET0_N : out STD_LOGIC;
     MIO : inout STD_LOGIC_VECTOR ( 53 downto 0 );
@@ -2411,7 +2410,6 @@ architecture STRUCTURE of system is
   signal PmodRTCC_0_Pmod_out_PIN9_I : STD_LOGIC;
   signal PmodRTCC_0_Pmod_out_PIN9_O : STD_LOGIC;
   signal PmodRTCC_0_Pmod_out_PIN9_T : STD_LOGIC;
-  signal Switches_ip2intc_irpt : STD_LOGIC;
   signal axi_gpio_0_GPIO_TRI_I : STD_LOGIC_VECTOR ( 3 downto 0 );
   signal axi_gpio_1_GPIO1_TRI_I : STD_LOGIC_VECTOR ( 3 downto 0 );
   signal axi_gpio_1_GPIO_TRI_O : STD_LOGIC_VECTOR ( 3 downto 0 );
@@ -2579,6 +2577,7 @@ architecture STRUCTURE of system is
   signal ps7_0_axi_periph_M05_AXI_WSTRB : STD_LOGIC_VECTOR ( 3 downto 0 );
   signal ps7_0_axi_periph_M05_AXI_WVALID : STD_LOGIC;
   signal rst_ps7_0_50M_peripheral_aresetn : STD_LOGIC_VECTOR ( 0 to 0 );
+  signal NLW_Switches_ip2intc_irpt_UNCONNECTED : STD_LOGIC;
   signal NLW_processing_system7_0_I2C0_SCL_O_UNCONNECTED : STD_LOGIC;
   signal NLW_processing_system7_0_I2C0_SCL_T_UNCONNECTED : STD_LOGIC;
   signal NLW_processing_system7_0_I2C0_SDA_O_UNCONNECTED : STD_LOGIC;
@@ -2725,29 +2724,6 @@ begin
   jc_pin9_o <= PmodOLED_0_Pmod_out_PIN9_O;
   jc_pin9_t <= PmodOLED_0_Pmod_out_PIN9_T;
   leds_4bits_tri_o(3 downto 0) <= axi_gpio_1_GPIO_TRI_O(3 downto 0);
-Alarm_Output: component system_axi_gpio_1_0
-     port map (
-      gpio_io_o(3 downto 0) => axi_gpio_1_GPIO_TRI_O(3 downto 0),
-      s_axi_aclk => processing_system7_0_FCLK_CLK0,
-      s_axi_araddr(8 downto 0) => ps7_0_axi_periph_M04_AXI_ARADDR(8 downto 0),
-      s_axi_aresetn => rst_ps7_0_50M_peripheral_aresetn(0),
-      s_axi_arready => ps7_0_axi_periph_M04_AXI_ARREADY,
-      s_axi_arvalid => ps7_0_axi_periph_M04_AXI_ARVALID,
-      s_axi_awaddr(8 downto 0) => ps7_0_axi_periph_M04_AXI_AWADDR(8 downto 0),
-      s_axi_awready => ps7_0_axi_periph_M04_AXI_AWREADY,
-      s_axi_awvalid => ps7_0_axi_periph_M04_AXI_AWVALID,
-      s_axi_bready => ps7_0_axi_periph_M04_AXI_BREADY,
-      s_axi_bresp(1 downto 0) => ps7_0_axi_periph_M04_AXI_BRESP(1 downto 0),
-      s_axi_bvalid => ps7_0_axi_periph_M04_AXI_BVALID,
-      s_axi_rdata(31 downto 0) => ps7_0_axi_periph_M04_AXI_RDATA(31 downto 0),
-      s_axi_rready => ps7_0_axi_periph_M04_AXI_RREADY,
-      s_axi_rresp(1 downto 0) => ps7_0_axi_periph_M04_AXI_RRESP(1 downto 0),
-      s_axi_rvalid => ps7_0_axi_periph_M04_AXI_RVALID,
-      s_axi_wdata(31 downto 0) => ps7_0_axi_periph_M04_AXI_WDATA(31 downto 0),
-      s_axi_wready => ps7_0_axi_periph_M04_AXI_WREADY,
-      s_axi_wstrb(3 downto 0) => ps7_0_axi_periph_M04_AXI_WSTRB(3 downto 0),
-      s_axi_wvalid => ps7_0_axi_periph_M04_AXI_WVALID
-    );
 Buttons: component system_axi_gpio_1_1
      port map (
       gpio_io_i(3 downto 0) => axi_gpio_1_GPIO1_TRI_I(3 downto 0),
@@ -2885,7 +2861,7 @@ PmodRTCC_0: component system_PmodRTCC_0_0
 Switches: component system_axi_gpio_0_1
      port map (
       gpio_io_i(3 downto 0) => axi_gpio_0_GPIO_TRI_I(3 downto 0),
-      ip2intc_irpt => Switches_ip2intc_irpt,
+      ip2intc_irpt => NLW_Switches_ip2intc_irpt_UNCONNECTED,
       s_axi_aclk => processing_system7_0_FCLK_CLK0,
       s_axi_araddr(8 downto 0) => ps7_0_axi_periph_M03_AXI_ARADDR(8 downto 0),
       s_axi_aresetn => rst_ps7_0_50M_peripheral_aresetn(0),
@@ -2906,10 +2882,32 @@ Switches: component system_axi_gpio_0_1
       s_axi_wstrb(3 downto 0) => ps7_0_axi_periph_M03_AXI_WSTRB(3 downto 0),
       s_axi_wvalid => ps7_0_axi_periph_M03_AXI_WVALID
     );
+led_ip: component system_axi_gpio_1_0
+     port map (
+      gpio_io_o(3 downto 0) => axi_gpio_1_GPIO_TRI_O(3 downto 0),
+      s_axi_aclk => processing_system7_0_FCLK_CLK0,
+      s_axi_araddr(8 downto 0) => ps7_0_axi_periph_M04_AXI_ARADDR(8 downto 0),
+      s_axi_aresetn => rst_ps7_0_50M_peripheral_aresetn(0),
+      s_axi_arready => ps7_0_axi_periph_M04_AXI_ARREADY,
+      s_axi_arvalid => ps7_0_axi_periph_M04_AXI_ARVALID,
+      s_axi_awaddr(8 downto 0) => ps7_0_axi_periph_M04_AXI_AWADDR(8 downto 0),
+      s_axi_awready => ps7_0_axi_periph_M04_AXI_AWREADY,
+      s_axi_awvalid => ps7_0_axi_periph_M04_AXI_AWVALID,
+      s_axi_bready => ps7_0_axi_periph_M04_AXI_BREADY,
+      s_axi_bresp(1 downto 0) => ps7_0_axi_periph_M04_AXI_BRESP(1 downto 0),
+      s_axi_bvalid => ps7_0_axi_periph_M04_AXI_BVALID,
+      s_axi_rdata(31 downto 0) => ps7_0_axi_periph_M04_AXI_RDATA(31 downto 0),
+      s_axi_rready => ps7_0_axi_periph_M04_AXI_RREADY,
+      s_axi_rresp(1 downto 0) => ps7_0_axi_periph_M04_AXI_RRESP(1 downto 0),
+      s_axi_rvalid => ps7_0_axi_periph_M04_AXI_RVALID,
+      s_axi_wdata(31 downto 0) => ps7_0_axi_periph_M04_AXI_WDATA(31 downto 0),
+      s_axi_wready => ps7_0_axi_periph_M04_AXI_WREADY,
+      s_axi_wstrb(3 downto 0) => ps7_0_axi_periph_M04_AXI_WSTRB(3 downto 0),
+      s_axi_wvalid => ps7_0_axi_periph_M04_AXI_WVALID
+    );
 processing_system7_0: component system_processing_system7_0_0
      port map (
-      Core0_nFIQ => PmodRTCC_0_I2C_Interrupt,
-      Core0_nIRQ => Switches_ip2intc_irpt,
+      Core0_nFIQ => Buttons_ip2intc_irpt,
       DDR_Addr(14 downto 0) => DDR_addr(14 downto 0),
       DDR_BankAddr(2 downto 0) => DDR_ba(2 downto 0),
       DDR_CAS_n => DDR_cas_n,
@@ -2935,7 +2933,7 @@ processing_system7_0: component system_processing_system7_0_0
       I2C0_SDA_I => '0',
       I2C0_SDA_O => NLW_processing_system7_0_I2C0_SDA_O_UNCONNECTED,
       I2C0_SDA_T => NLW_processing_system7_0_I2C0_SDA_T_UNCONNECTED,
-      IRQ_F2P(0) => Buttons_ip2intc_irpt,
+      IRQ_F2P(0) => PmodRTCC_0_I2C_Interrupt,
       MIO(53 downto 0) => FIXED_IO_mio(53 downto 0),
       M_AXI_GP0_ACLK => processing_system7_0_FCLK_CLK0,
       M_AXI_GP0_ARADDR(31 downto 0) => processing_system7_0_M_AXI_GP0_ARADDR(31 downto 0),

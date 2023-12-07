@@ -1,0 +1,23 @@
+#-----------------------------------------------------------
+# Vivado v2019.1 (64-bit)
+# SW Build 2552052 on Fri May 24 14:49:42 MDT 2019
+# IP Build 2548770 on Fri May 24 18:01:18 MDT 2019
+# Start of session at: Wed Dec  6 10:47:30 2023
+# Process ID: 8968
+# Current directory: C:/git/AlarmSystem
+# Command line: vivado.exe -gui_launcher_event rodinguilauncherevent8032 C:\git\AlarmSystem\AlarmSystem.xpr
+# Log file: C:/git/AlarmSystem/vivado.log
+# Journal file: C:/git/AlarmSystem\vivado.jou
+#-----------------------------------------------------------
+start_gui
+open_project C:/git/AlarmSystem/AlarmSystem.xpr
+INFO: [Project 1-313] Project file moved from 'C:/X_Projects/AlarmSystem' since last save.
+Scanning sources...
+Finished scanning sources
+INFO: [IP_Flow 19-234] Refreshing IP repositories
+INFO: [IP_Flow 19-1700] Loaded user IP repository 'c:/Xilinx/Downloads/vivado-library-v2019.1-1'.
+INFO: [IP_Flow 19-2313] Loaded Vivado IP repository 'C:/Xilinx/Vivado/2019.1/data/ip'.
+open_project: Time (s): cpu = 00:00:03 ; elapsed = 00:00:11 . Memory (MB): peak = 844.953 ; gain = 216.133
+update_compile_order -fileset sources_1
+exit
+INFO: [Common 17-206] Exiting Vivado at Wed Dec  6 10:53:53 2023...

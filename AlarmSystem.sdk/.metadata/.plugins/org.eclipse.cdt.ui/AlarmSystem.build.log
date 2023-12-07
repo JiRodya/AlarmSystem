@@ -1,8 +1,30 @@
-03:42:41 **** Incremental Build of configuration Debug for project AlarmSystem ****
+04:57:52 **** Auto Build of configuration Debug for project AlarmSystem ****
 make pre-build main-build 
 a9-linaro-pre-build-step
 ' '
-make: Nothing to be done for 'main-build'.
+'Building file: ../src/interrupt_handler.c'
+'Invoking: ARM v7 gcc compiler'
+arm-none-eabi-gcc -Wall -O0 -g3 -I../../AlarmSystem_bsp/ps7_cortexa9_0/include -I"C:\Users\diane\OneDrive\Desktop\AlarmSystem.sdk\AlarmSystem" -I"C:\Users\diane\OneDrive\Desktop\AlarmSystem.sdk\AlarmSystem\inc" -c -fmessage-length=0 -MT"src/interrupt_handler.o" -mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -MMD -MP -MF"src/interrupt_handler.d" -MT"src/interrupt_handler.o" -o "src/interrupt_handler.o" "../src/interrupt_handler.c"
+../src/interrupt_handler.c: In function 'Push_Intr_Handler':
+../src/interrupt_handler.c:189:29: warning: too many arguments for format [-Wformat-extra-args]
+    snprintf(dataBuffer, 20, "+", finalTime,AddingValue);
+                             ^~~
+../src/interrupt_handler.c:240:29: warning: too many arguments for format [-Wformat-extra-args]
+    snprintf(dataBuffer, 20, "-", finalTime,AddingValue);
+                             ^~~
+'Finished building: ../src/interrupt_handler.c'
+' '
+'Building target: AlarmSystem.elf'
+'Invoking: ARM v7 gcc linker'
+arm-none-eabi-gcc -mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -Wl,-build-id=none -specs=Xilinx.spec -Wl,-T -Wl,../src/lscript.ld -L../../AlarmSystem_bsp/ps7_cortexa9_0/lib -o "AlarmSystem.elf"  ./src/clock.o ./src/data_handle.o ./src/interrupt_handler.o ./src/io.o ./src/lab7.o ./src/main.o ./src/oled.o   -Wl,--start-group,-lxil,-lgcc,-lc,--end-group
+'Finished building target: AlarmSystem.elf'
+' '
+'Invoking: ARM v7 Print Size'
+arm-none-eabi-size AlarmSystem.elf  |tee "AlarmSystem.elf.size"
+   text	   data	    bss	    dec	    hex	filename
+  88132	   3504	  24704	 116340	  1c674	AlarmSystem.elf
+'Finished building: AlarmSystem.elf.size'
+' '
 
-03:42:41 Build Finished (took 141ms)
+04:57:53 Build Finished (took 661ms)
 

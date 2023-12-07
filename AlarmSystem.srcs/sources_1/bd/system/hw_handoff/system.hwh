@@ -1,14 +1,9 @@
 ﻿<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
-<EDKSYSTEM EDWVERSION="1.2" TIMESTAMP="Wed Dec  6 18:57:26 2023" VIVADOVERSION="2019.1">
+<EDKSYSTEM EDWVERSION="1.2" TIMESTAMP="Thu Dec  7 04:11:06 2023" VIVADOVERSION="2019.1">
 
   <SYSTEMINFO ARCH="zynq" BOARD="digilentinc.com:zybo-z7-20:part0:1.2" DEVICE="7z020" NAME="system" PACKAGE="clg400" SPEEDGRADE="-1"/>
 
   <EXTERNALPORTS>
-    <PORT DIR="I" LEFT="3" NAME="btns_4bits_0_tri_i" RIGHT="0" SIGIS="undef" SIGNAME="Buttons_gpio_io_i">
-      <CONNECTIONS>
-        <CONNECTION INSTANCE="Buttons" PORT="gpio_io_i"/>
-      </CONNECTIONS>
-    </PORT>
     <PORT DIR="IO" NAME="DDR_cas_n" SIGIS="undef" SIGNAME="processing_system7_0_DDR_CAS_n">
       <CONNECTIONS>
         <CONNECTION INSTANCE="processing_system7_0" PORT="DDR_CAS_n"/>
@@ -204,39 +199,9 @@
         <CONNECTION INSTANCE="PmodOLED_0" PORT="Pmod_out_pin8_o"/>
       </CONNECTIONS>
     </PORT>
-    <PORT DIR="O" LEFT="3" NAME="leds_4bits_tri_o" RIGHT="0" SIGIS="undef" SIGNAME="led_ip_gpio_io_o">
+    <PORT DIR="I" LEFT="3" NAME="btns_4bits_0_tri_i" RIGHT="0" SIGIS="undef" SIGNAME="Buttons_gpio_io_i">
       <CONNECTIONS>
-        <CONNECTION INSTANCE="led_ip" PORT="gpio_io_o"/>
-      </CONNECTIONS>
-    </PORT>
-    <PORT DIR="IO" LEFT="53" NAME="FIXED_IO_mio" RIGHT="0" SIGIS="undef" SIGNAME="processing_system7_0_MIO">
-      <CONNECTIONS>
-        <CONNECTION INSTANCE="processing_system7_0" PORT="MIO"/>
-      </CONNECTIONS>
-    </PORT>
-    <PORT DIR="IO" NAME="FIXED_IO_ddr_vrn" SIGIS="undef" SIGNAME="processing_system7_0_DDR_VRN">
-      <CONNECTIONS>
-        <CONNECTION INSTANCE="processing_system7_0" PORT="DDR_VRN"/>
-      </CONNECTIONS>
-    </PORT>
-    <PORT DIR="IO" NAME="FIXED_IO_ddr_vrp" SIGIS="undef" SIGNAME="processing_system7_0_DDR_VRP">
-      <CONNECTIONS>
-        <CONNECTION INSTANCE="processing_system7_0" PORT="DDR_VRP"/>
-      </CONNECTIONS>
-    </PORT>
-    <PORT DIR="IO" NAME="FIXED_IO_ps_srstb" SIGIS="undef" SIGNAME="processing_system7_0_PS_SRSTB">
-      <CONNECTIONS>
-        <CONNECTION INSTANCE="processing_system7_0" PORT="PS_SRSTB"/>
-      </CONNECTIONS>
-    </PORT>
-    <PORT DIR="IO" NAME="FIXED_IO_ps_clk" SIGIS="undef" SIGNAME="processing_system7_0_PS_CLK">
-      <CONNECTIONS>
-        <CONNECTION INSTANCE="processing_system7_0" PORT="PS_CLK"/>
-      </CONNECTIONS>
-    </PORT>
-    <PORT DIR="IO" NAME="FIXED_IO_ps_porb" SIGIS="undef" SIGNAME="processing_system7_0_PS_PORB">
-      <CONNECTIONS>
-        <CONNECTION INSTANCE="processing_system7_0" PORT="PS_PORB"/>
+        <CONNECTION INSTANCE="Buttons" PORT="gpio_io_i"/>
       </CONNECTIONS>
     </PORT>
     <PORT DIR="O" NAME="jb_pin1_o" SIGIS="undef" SIGNAME="PmodRTCC_0_Pmod_out_pin1_o">
@@ -357,6 +322,41 @@
     <PORT DIR="O" NAME="jb_pin8_o" SIGIS="undef" SIGNAME="PmodRTCC_0_Pmod_out_pin8_o">
       <CONNECTIONS>
         <CONNECTION INSTANCE="PmodRTCC_0" PORT="Pmod_out_pin8_o"/>
+      </CONNECTIONS>
+    </PORT>
+    <PORT DIR="IO" LEFT="53" NAME="FIXED_IO_mio" RIGHT="0" SIGIS="undef" SIGNAME="processing_system7_0_MIO">
+      <CONNECTIONS>
+        <CONNECTION INSTANCE="processing_system7_0" PORT="MIO"/>
+      </CONNECTIONS>
+    </PORT>
+    <PORT DIR="IO" NAME="FIXED_IO_ddr_vrn" SIGIS="undef" SIGNAME="processing_system7_0_DDR_VRN">
+      <CONNECTIONS>
+        <CONNECTION INSTANCE="processing_system7_0" PORT="DDR_VRN"/>
+      </CONNECTIONS>
+    </PORT>
+    <PORT DIR="IO" NAME="FIXED_IO_ddr_vrp" SIGIS="undef" SIGNAME="processing_system7_0_DDR_VRP">
+      <CONNECTIONS>
+        <CONNECTION INSTANCE="processing_system7_0" PORT="DDR_VRP"/>
+      </CONNECTIONS>
+    </PORT>
+    <PORT DIR="IO" NAME="FIXED_IO_ps_srstb" SIGIS="undef" SIGNAME="processing_system7_0_PS_SRSTB">
+      <CONNECTIONS>
+        <CONNECTION INSTANCE="processing_system7_0" PORT="PS_SRSTB"/>
+      </CONNECTIONS>
+    </PORT>
+    <PORT DIR="IO" NAME="FIXED_IO_ps_clk" SIGIS="undef" SIGNAME="processing_system7_0_PS_CLK">
+      <CONNECTIONS>
+        <CONNECTION INSTANCE="processing_system7_0" PORT="PS_CLK"/>
+      </CONNECTIONS>
+    </PORT>
+    <PORT DIR="IO" NAME="FIXED_IO_ps_porb" SIGIS="undef" SIGNAME="processing_system7_0_PS_PORB">
+      <CONNECTIONS>
+        <CONNECTION INSTANCE="processing_system7_0" PORT="PS_PORB"/>
+      </CONNECTIONS>
+    </PORT>
+    <PORT DIR="O" LEFT="3" NAME="leds_4bits_tri_o" RIGHT="0" SIGIS="undef" SIGNAME="led_ip_gpio_io_o">
+      <CONNECTIONS>
+        <CONNECTION INSTANCE="led_ip" PORT="gpio_io_o"/>
       </CONNECTIONS>
     </PORT>
     <PORT DIR="I" LEFT="3" NAME="sws_4bits_tri_i" RIGHT="0" SIGIS="undef" SIGNAME="Switches_gpio_io_i">
@@ -1400,7 +1400,11 @@
             <CONNECTION INSTANCE="ps7_0_axi_periph" PORT="M02_AXI_wvalid"/>
           </CONNECTIONS>
         </PORT>
-        <PORT DIR="O" NAME="I2C_Interrupt" SENSITIVITY="LEVEL_HIGH" SIGIS="INTERRUPT"/>
+        <PORT DIR="O" NAME="I2C_Interrupt" SENSITIVITY="LEVEL_HIGH" SIGIS="INTERRUPT" SIGNAME="PmodRTCC_0_I2C_Interrupt">
+          <CONNECTIONS>
+            <CONNECTION INSTANCE="processing_system7_0" PORT="IRQ_F2P"/>
+          </CONNECTIONS>
+        </PORT>
         <PORT DIR="I" NAME="Pmod_out_pin10_i" SIGIS="undef" SIGNAME="PmodRTCC_0_Pmod_out_pin10_i">
           <CONNECTIONS>
             <CONNECTION INSTANCE="system_imp" PORT="jb_pin10_i"/>
@@ -1905,11 +1909,7 @@
             <CONNECTION INSTANCE="ps7_0_axi_periph" PORT="M03_AXI_rready"/>
           </CONNECTIONS>
         </PORT>
-        <PORT DIR="O" NAME="ip2intc_irpt" SENSITIVITY="LEVEL_HIGH" SIGIS="INTERRUPT" SIGNAME="Switches_ip2intc_irpt">
-          <CONNECTIONS>
-            <CONNECTION INSTANCE="processing_system7_0" PORT="IRQ_F2P"/>
-          </CONNECTIONS>
-        </PORT>
+        <PORT DIR="O" NAME="ip2intc_irpt" SENSITIVITY="LEVEL_HIGH" SIGIS="INTERRUPT"/>
         <PORT DIR="I" LEFT="3" NAME="gpio_io_i" RIGHT="0" SIGIS="undef" SIGNAME="Switches_gpio_io_i">
           <CONNECTIONS>
             <CONNECTION INSTANCE="system_imp" PORT="sws_4bits_tri_i"/>
@@ -3489,9 +3489,9 @@
             <CONNECTION INSTANCE="ps7_0_axi_periph" PORT="S00_AXI_rdata"/>
           </CONNECTIONS>
         </PORT>
-        <PORT DIR="I" LEFT="0" NAME="IRQ_F2P" RIGHT="0" SENSITIVITY="LEVEL_HIGH" SIGIS="INTERRUPT" SIGNAME="Switches_ip2intc_irpt">
+        <PORT DIR="I" LEFT="0" NAME="IRQ_F2P" RIGHT="0" SENSITIVITY="LEVEL_HIGH" SIGIS="INTERRUPT" SIGNAME="PmodRTCC_0_I2C_Interrupt">
           <CONNECTIONS>
-            <CONNECTION INSTANCE="Switches" PORT="ip2intc_irpt"/>
+            <CONNECTION INSTANCE="PmodRTCC_0" PORT="I2C_Interrupt"/>
           </CONNECTIONS>
         </PORT>
         <PORT DIR="I" NAME="Core0_nFIQ" SENSITIVITY="LEVEL_HIGH" SIGIS="INTERRUPT" SIGNAME="Buttons_ip2intc_irpt">
@@ -4385,6 +4385,93 @@
             <CONNECTION INSTANCE="processing_system7_0" PORT="M_AXI_GP0_RREADY"/>
           </CONNECTIONS>
         </PORT>
+        <PORT DIR="O" LEFT="31" NAME="M05_AXI_awaddr" RIGHT="0" SIGIS="undef" SIGNAME="Buttons_s_axi_awaddr">
+          <CONNECTIONS>
+            <CONNECTION INSTANCE="Buttons" PORT="s_axi_awaddr"/>
+          </CONNECTIONS>
+        </PORT>
+        <PORT DIR="O" NAME="M05_AXI_awprot" SIGIS="undef"/>
+        <PORT DIR="O" NAME="M05_AXI_awvalid" SIGIS="undef" SIGNAME="Buttons_s_axi_awvalid">
+          <CONNECTIONS>
+            <CONNECTION INSTANCE="Buttons" PORT="s_axi_awvalid"/>
+          </CONNECTIONS>
+        </PORT>
+        <PORT DIR="I" NAME="M05_AXI_awready" SIGIS="undef" SIGNAME="Buttons_s_axi_awready">
+          <CONNECTIONS>
+            <CONNECTION INSTANCE="Buttons" PORT="s_axi_awready"/>
+          </CONNECTIONS>
+        </PORT>
+        <PORT DIR="O" LEFT="31" NAME="M05_AXI_wdata" RIGHT="0" SIGIS="undef" SIGNAME="Buttons_s_axi_wdata">
+          <CONNECTIONS>
+            <CONNECTION INSTANCE="Buttons" PORT="s_axi_wdata"/>
+          </CONNECTIONS>
+        </PORT>
+        <PORT DIR="O" LEFT="3" NAME="M05_AXI_wstrb" RIGHT="0" SIGIS="undef" SIGNAME="Buttons_s_axi_wstrb">
+          <CONNECTIONS>
+            <CONNECTION INSTANCE="Buttons" PORT="s_axi_wstrb"/>
+          </CONNECTIONS>
+        </PORT>
+        <PORT DIR="O" NAME="M05_AXI_wvalid" SIGIS="undef" SIGNAME="Buttons_s_axi_wvalid">
+          <CONNECTIONS>
+            <CONNECTION INSTANCE="Buttons" PORT="s_axi_wvalid"/>
+          </CONNECTIONS>
+        </PORT>
+        <PORT DIR="I" NAME="M05_AXI_wready" SIGIS="undef" SIGNAME="Buttons_s_axi_wready">
+          <CONNECTIONS>
+            <CONNECTION INSTANCE="Buttons" PORT="s_axi_wready"/>
+          </CONNECTIONS>
+        </PORT>
+        <PORT DIR="I" LEFT="1" NAME="M05_AXI_bresp" RIGHT="0" SIGIS="undef" SIGNAME="Buttons_s_axi_bresp">
+          <CONNECTIONS>
+            <CONNECTION INSTANCE="Buttons" PORT="s_axi_bresp"/>
+          </CONNECTIONS>
+        </PORT>
+        <PORT DIR="I" NAME="M05_AXI_bvalid" SIGIS="undef" SIGNAME="Buttons_s_axi_bvalid">
+          <CONNECTIONS>
+            <CONNECTION INSTANCE="Buttons" PORT="s_axi_bvalid"/>
+          </CONNECTIONS>
+        </PORT>
+        <PORT DIR="O" NAME="M05_AXI_bready" SIGIS="undef" SIGNAME="Buttons_s_axi_bready">
+          <CONNECTIONS>
+            <CONNECTION INSTANCE="Buttons" PORT="s_axi_bready"/>
+          </CONNECTIONS>
+        </PORT>
+        <PORT DIR="O" LEFT="31" NAME="M05_AXI_araddr" RIGHT="0" SIGIS="undef" SIGNAME="Buttons_s_axi_araddr">
+          <CONNECTIONS>
+            <CONNECTION INSTANCE="Buttons" PORT="s_axi_araddr"/>
+          </CONNECTIONS>
+        </PORT>
+        <PORT DIR="O" NAME="M05_AXI_arprot" SIGIS="undef"/>
+        <PORT DIR="O" NAME="M05_AXI_arvalid" SIGIS="undef" SIGNAME="Buttons_s_axi_arvalid">
+          <CONNECTIONS>
+            <CONNECTION INSTANCE="Buttons" PORT="s_axi_arvalid"/>
+          </CONNECTIONS>
+        </PORT>
+        <PORT DIR="I" NAME="M05_AXI_arready" SIGIS="undef" SIGNAME="Buttons_s_axi_arready">
+          <CONNECTIONS>
+            <CONNECTION INSTANCE="Buttons" PORT="s_axi_arready"/>
+          </CONNECTIONS>
+        </PORT>
+        <PORT DIR="I" LEFT="31" NAME="M05_AXI_rdata" RIGHT="0" SIGIS="undef" SIGNAME="Buttons_s_axi_rdata">
+          <CONNECTIONS>
+            <CONNECTION INSTANCE="Buttons" PORT="s_axi_rdata"/>
+          </CONNECTIONS>
+        </PORT>
+        <PORT DIR="I" LEFT="1" NAME="M05_AXI_rresp" RIGHT="0" SIGIS="undef" SIGNAME="Buttons_s_axi_rresp">
+          <CONNECTIONS>
+            <CONNECTION INSTANCE="Buttons" PORT="s_axi_rresp"/>
+          </CONNECTIONS>
+        </PORT>
+        <PORT DIR="I" NAME="M05_AXI_rvalid" SIGIS="undef" SIGNAME="Buttons_s_axi_rvalid">
+          <CONNECTIONS>
+            <CONNECTION INSTANCE="Buttons" PORT="s_axi_rvalid"/>
+          </CONNECTIONS>
+        </PORT>
+        <PORT DIR="O" NAME="M05_AXI_rready" SIGIS="undef" SIGNAME="Buttons_s_axi_rready">
+          <CONNECTIONS>
+            <CONNECTION INSTANCE="Buttons" PORT="s_axi_rready"/>
+          </CONNECTIONS>
+        </PORT>
         <PORT DIR="O" LEFT="31" NAME="M02_AXI_awaddr" RIGHT="0" SIGIS="undef" SIGNAME="PmodRTCC_0_AXI_LITE_IIC_awaddr">
           <CONNECTIONS>
             <CONNECTION INSTANCE="PmodRTCC_0" PORT="AXI_LITE_IIC_awaddr"/>
@@ -4470,93 +4557,6 @@
         <PORT DIR="O" NAME="M02_AXI_rready" SIGIS="undef" SIGNAME="PmodRTCC_0_AXI_LITE_IIC_rready">
           <CONNECTIONS>
             <CONNECTION INSTANCE="PmodRTCC_0" PORT="AXI_LITE_IIC_rready"/>
-          </CONNECTIONS>
-        </PORT>
-        <PORT DIR="O" LEFT="31" NAME="M01_AXI_awaddr" RIGHT="0" SIGIS="undef" SIGNAME="PmodOLED_0_AXI_LITE_GPIO_awaddr">
-          <CONNECTIONS>
-            <CONNECTION INSTANCE="PmodOLED_0" PORT="AXI_LITE_GPIO_awaddr"/>
-          </CONNECTIONS>
-        </PORT>
-        <PORT DIR="O" NAME="M01_AXI_awprot" SIGIS="undef"/>
-        <PORT DIR="O" NAME="M01_AXI_awvalid" SIGIS="undef" SIGNAME="PmodOLED_0_AXI_LITE_GPIO_awvalid">
-          <CONNECTIONS>
-            <CONNECTION INSTANCE="PmodOLED_0" PORT="AXI_LITE_GPIO_awvalid"/>
-          </CONNECTIONS>
-        </PORT>
-        <PORT DIR="I" NAME="M01_AXI_awready" SIGIS="undef" SIGNAME="PmodOLED_0_AXI_LITE_GPIO_awready">
-          <CONNECTIONS>
-            <CONNECTION INSTANCE="PmodOLED_0" PORT="AXI_LITE_GPIO_awready"/>
-          </CONNECTIONS>
-        </PORT>
-        <PORT DIR="O" LEFT="31" NAME="M01_AXI_wdata" RIGHT="0" SIGIS="undef" SIGNAME="PmodOLED_0_AXI_LITE_GPIO_wdata">
-          <CONNECTIONS>
-            <CONNECTION INSTANCE="PmodOLED_0" PORT="AXI_LITE_GPIO_wdata"/>
-          </CONNECTIONS>
-        </PORT>
-        <PORT DIR="O" LEFT="3" NAME="M01_AXI_wstrb" RIGHT="0" SIGIS="undef" SIGNAME="PmodOLED_0_AXI_LITE_GPIO_wstrb">
-          <CONNECTIONS>
-            <CONNECTION INSTANCE="PmodOLED_0" PORT="AXI_LITE_GPIO_wstrb"/>
-          </CONNECTIONS>
-        </PORT>
-        <PORT DIR="O" NAME="M01_AXI_wvalid" SIGIS="undef" SIGNAME="PmodOLED_0_AXI_LITE_GPIO_wvalid">
-          <CONNECTIONS>
-            <CONNECTION INSTANCE="PmodOLED_0" PORT="AXI_LITE_GPIO_wvalid"/>
-          </CONNECTIONS>
-        </PORT>
-        <PORT DIR="I" NAME="M01_AXI_wready" SIGIS="undef" SIGNAME="PmodOLED_0_AXI_LITE_GPIO_wready">
-          <CONNECTIONS>
-            <CONNECTION INSTANCE="PmodOLED_0" PORT="AXI_LITE_GPIO_wready"/>
-          </CONNECTIONS>
-        </PORT>
-        <PORT DIR="I" LEFT="1" NAME="M01_AXI_bresp" RIGHT="0" SIGIS="undef" SIGNAME="PmodOLED_0_AXI_LITE_GPIO_bresp">
-          <CONNECTIONS>
-            <CONNECTION INSTANCE="PmodOLED_0" PORT="AXI_LITE_GPIO_bresp"/>
-          </CONNECTIONS>
-        </PORT>
-        <PORT DIR="I" NAME="M01_AXI_bvalid" SIGIS="undef" SIGNAME="PmodOLED_0_AXI_LITE_GPIO_bvalid">
-          <CONNECTIONS>
-            <CONNECTION INSTANCE="PmodOLED_0" PORT="AXI_LITE_GPIO_bvalid"/>
-          </CONNECTIONS>
-        </PORT>
-        <PORT DIR="O" NAME="M01_AXI_bready" SIGIS="undef" SIGNAME="PmodOLED_0_AXI_LITE_GPIO_bready">
-          <CONNECTIONS>
-            <CONNECTION INSTANCE="PmodOLED_0" PORT="AXI_LITE_GPIO_bready"/>
-          </CONNECTIONS>
-        </PORT>
-        <PORT DIR="O" LEFT="31" NAME="M01_AXI_araddr" RIGHT="0" SIGIS="undef" SIGNAME="PmodOLED_0_AXI_LITE_GPIO_araddr">
-          <CONNECTIONS>
-            <CONNECTION INSTANCE="PmodOLED_0" PORT="AXI_LITE_GPIO_araddr"/>
-          </CONNECTIONS>
-        </PORT>
-        <PORT DIR="O" NAME="M01_AXI_arprot" SIGIS="undef"/>
-        <PORT DIR="O" NAME="M01_AXI_arvalid" SIGIS="undef" SIGNAME="PmodOLED_0_AXI_LITE_GPIO_arvalid">
-          <CONNECTIONS>
-            <CONNECTION INSTANCE="PmodOLED_0" PORT="AXI_LITE_GPIO_arvalid"/>
-          </CONNECTIONS>
-        </PORT>
-        <PORT DIR="I" NAME="M01_AXI_arready" SIGIS="undef" SIGNAME="PmodOLED_0_AXI_LITE_GPIO_arready">
-          <CONNECTIONS>
-            <CONNECTION INSTANCE="PmodOLED_0" PORT="AXI_LITE_GPIO_arready"/>
-          </CONNECTIONS>
-        </PORT>
-        <PORT DIR="I" LEFT="31" NAME="M01_AXI_rdata" RIGHT="0" SIGIS="undef" SIGNAME="PmodOLED_0_AXI_LITE_GPIO_rdata">
-          <CONNECTIONS>
-            <CONNECTION INSTANCE="PmodOLED_0" PORT="AXI_LITE_GPIO_rdata"/>
-          </CONNECTIONS>
-        </PORT>
-        <PORT DIR="I" LEFT="1" NAME="M01_AXI_rresp" RIGHT="0" SIGIS="undef" SIGNAME="PmodOLED_0_AXI_LITE_GPIO_rresp">
-          <CONNECTIONS>
-            <CONNECTION INSTANCE="PmodOLED_0" PORT="AXI_LITE_GPIO_rresp"/>
-          </CONNECTIONS>
-        </PORT>
-        <PORT DIR="I" NAME="M01_AXI_rvalid" SIGIS="undef" SIGNAME="PmodOLED_0_AXI_LITE_GPIO_rvalid">
-          <CONNECTIONS>
-            <CONNECTION INSTANCE="PmodOLED_0" PORT="AXI_LITE_GPIO_rvalid"/>
-          </CONNECTIONS>
-        </PORT>
-        <PORT DIR="O" NAME="M01_AXI_rready" SIGIS="undef" SIGNAME="PmodOLED_0_AXI_LITE_GPIO_rready">
-          <CONNECTIONS>
-            <CONNECTION INSTANCE="PmodOLED_0" PORT="AXI_LITE_GPIO_rready"/>
           </CONNECTIONS>
         </PORT>
         <PORT DIR="O" LEFT="31" NAME="M03_AXI_awaddr" RIGHT="0" SIGIS="undef" SIGNAME="Switches_s_axi_awaddr">
@@ -4646,91 +4646,91 @@
             <CONNECTION INSTANCE="Switches" PORT="s_axi_rready"/>
           </CONNECTIONS>
         </PORT>
-        <PORT DIR="O" LEFT="31" NAME="M05_AXI_awaddr" RIGHT="0" SIGIS="undef" SIGNAME="Buttons_s_axi_awaddr">
+        <PORT DIR="O" LEFT="31" NAME="M01_AXI_awaddr" RIGHT="0" SIGIS="undef" SIGNAME="PmodOLED_0_AXI_LITE_GPIO_awaddr">
           <CONNECTIONS>
-            <CONNECTION INSTANCE="Buttons" PORT="s_axi_awaddr"/>
+            <CONNECTION INSTANCE="PmodOLED_0" PORT="AXI_LITE_GPIO_awaddr"/>
           </CONNECTIONS>
         </PORT>
-        <PORT DIR="O" NAME="M05_AXI_awprot" SIGIS="undef"/>
-        <PORT DIR="O" NAME="M05_AXI_awvalid" SIGIS="undef" SIGNAME="Buttons_s_axi_awvalid">
+        <PORT DIR="O" NAME="M01_AXI_awprot" SIGIS="undef"/>
+        <PORT DIR="O" NAME="M01_AXI_awvalid" SIGIS="undef" SIGNAME="PmodOLED_0_AXI_LITE_GPIO_awvalid">
           <CONNECTIONS>
-            <CONNECTION INSTANCE="Buttons" PORT="s_axi_awvalid"/>
+            <CONNECTION INSTANCE="PmodOLED_0" PORT="AXI_LITE_GPIO_awvalid"/>
           </CONNECTIONS>
         </PORT>
-        <PORT DIR="I" NAME="M05_AXI_awready" SIGIS="undef" SIGNAME="Buttons_s_axi_awready">
+        <PORT DIR="I" NAME="M01_AXI_awready" SIGIS="undef" SIGNAME="PmodOLED_0_AXI_LITE_GPIO_awready">
           <CONNECTIONS>
-            <CONNECTION INSTANCE="Buttons" PORT="s_axi_awready"/>
+            <CONNECTION INSTANCE="PmodOLED_0" PORT="AXI_LITE_GPIO_awready"/>
           </CONNECTIONS>
         </PORT>
-        <PORT DIR="O" LEFT="31" NAME="M05_AXI_wdata" RIGHT="0" SIGIS="undef" SIGNAME="Buttons_s_axi_wdata">
+        <PORT DIR="O" LEFT="31" NAME="M01_AXI_wdata" RIGHT="0" SIGIS="undef" SIGNAME="PmodOLED_0_AXI_LITE_GPIO_wdata">
           <CONNECTIONS>
-            <CONNECTION INSTANCE="Buttons" PORT="s_axi_wdata"/>
+            <CONNECTION INSTANCE="PmodOLED_0" PORT="AXI_LITE_GPIO_wdata"/>
           </CONNECTIONS>
         </PORT>
-        <PORT DIR="O" LEFT="3" NAME="M05_AXI_wstrb" RIGHT="0" SIGIS="undef" SIGNAME="Buttons_s_axi_wstrb">
+        <PORT DIR="O" LEFT="3" NAME="M01_AXI_wstrb" RIGHT="0" SIGIS="undef" SIGNAME="PmodOLED_0_AXI_LITE_GPIO_wstrb">
           <CONNECTIONS>
-            <CONNECTION INSTANCE="Buttons" PORT="s_axi_wstrb"/>
+            <CONNECTION INSTANCE="PmodOLED_0" PORT="AXI_LITE_GPIO_wstrb"/>
           </CONNECTIONS>
         </PORT>
-        <PORT DIR="O" NAME="M05_AXI_wvalid" SIGIS="undef" SIGNAME="Buttons_s_axi_wvalid">
+        <PORT DIR="O" NAME="M01_AXI_wvalid" SIGIS="undef" SIGNAME="PmodOLED_0_AXI_LITE_GPIO_wvalid">
           <CONNECTIONS>
-            <CONNECTION INSTANCE="Buttons" PORT="s_axi_wvalid"/>
+            <CONNECTION INSTANCE="PmodOLED_0" PORT="AXI_LITE_GPIO_wvalid"/>
           </CONNECTIONS>
         </PORT>
-        <PORT DIR="I" NAME="M05_AXI_wready" SIGIS="undef" SIGNAME="Buttons_s_axi_wready">
+        <PORT DIR="I" NAME="M01_AXI_wready" SIGIS="undef" SIGNAME="PmodOLED_0_AXI_LITE_GPIO_wready">
           <CONNECTIONS>
-            <CONNECTION INSTANCE="Buttons" PORT="s_axi_wready"/>
+            <CONNECTION INSTANCE="PmodOLED_0" PORT="AXI_LITE_GPIO_wready"/>
           </CONNECTIONS>
         </PORT>
-        <PORT DIR="I" LEFT="1" NAME="M05_AXI_bresp" RIGHT="0" SIGIS="undef" SIGNAME="Buttons_s_axi_bresp">
+        <PORT DIR="I" LEFT="1" NAME="M01_AXI_bresp" RIGHT="0" SIGIS="undef" SIGNAME="PmodOLED_0_AXI_LITE_GPIO_bresp">
           <CONNECTIONS>
-            <CONNECTION INSTANCE="Buttons" PORT="s_axi_bresp"/>
+            <CONNECTION INSTANCE="PmodOLED_0" PORT="AXI_LITE_GPIO_bresp"/>
           </CONNECTIONS>
         </PORT>
-        <PORT DIR="I" NAME="M05_AXI_bvalid" SIGIS="undef" SIGNAME="Buttons_s_axi_bvalid">
+        <PORT DIR="I" NAME="M01_AXI_bvalid" SIGIS="undef" SIGNAME="PmodOLED_0_AXI_LITE_GPIO_bvalid">
           <CONNECTIONS>
-            <CONNECTION INSTANCE="Buttons" PORT="s_axi_bvalid"/>
+            <CONNECTION INSTANCE="PmodOLED_0" PORT="AXI_LITE_GPIO_bvalid"/>
           </CONNECTIONS>
         </PORT>
-        <PORT DIR="O" NAME="M05_AXI_bready" SIGIS="undef" SIGNAME="Buttons_s_axi_bready">
+        <PORT DIR="O" NAME="M01_AXI_bready" SIGIS="undef" SIGNAME="PmodOLED_0_AXI_LITE_GPIO_bready">
           <CONNECTIONS>
-            <CONNECTION INSTANCE="Buttons" PORT="s_axi_bready"/>
+            <CONNECTION INSTANCE="PmodOLED_0" PORT="AXI_LITE_GPIO_bready"/>
           </CONNECTIONS>
         </PORT>
-        <PORT DIR="O" LEFT="31" NAME="M05_AXI_araddr" RIGHT="0" SIGIS="undef" SIGNAME="Buttons_s_axi_araddr">
+        <PORT DIR="O" LEFT="31" NAME="M01_AXI_araddr" RIGHT="0" SIGIS="undef" SIGNAME="PmodOLED_0_AXI_LITE_GPIO_araddr">
           <CONNECTIONS>
-            <CONNECTION INSTANCE="Buttons" PORT="s_axi_araddr"/>
+            <CONNECTION INSTANCE="PmodOLED_0" PORT="AXI_LITE_GPIO_araddr"/>
           </CONNECTIONS>
         </PORT>
-        <PORT DIR="O" NAME="M05_AXI_arprot" SIGIS="undef"/>
-        <PORT DIR="O" NAME="M05_AXI_arvalid" SIGIS="undef" SIGNAME="Buttons_s_axi_arvalid">
+        <PORT DIR="O" NAME="M01_AXI_arprot" SIGIS="undef"/>
+        <PORT DIR="O" NAME="M01_AXI_arvalid" SIGIS="undef" SIGNAME="PmodOLED_0_AXI_LITE_GPIO_arvalid">
           <CONNECTIONS>
-            <CONNECTION INSTANCE="Buttons" PORT="s_axi_arvalid"/>
+            <CONNECTION INSTANCE="PmodOLED_0" PORT="AXI_LITE_GPIO_arvalid"/>
           </CONNECTIONS>
         </PORT>
-        <PORT DIR="I" NAME="M05_AXI_arready" SIGIS="undef" SIGNAME="Buttons_s_axi_arready">
+        <PORT DIR="I" NAME="M01_AXI_arready" SIGIS="undef" SIGNAME="PmodOLED_0_AXI_LITE_GPIO_arready">
           <CONNECTIONS>
-            <CONNECTION INSTANCE="Buttons" PORT="s_axi_arready"/>
+            <CONNECTION INSTANCE="PmodOLED_0" PORT="AXI_LITE_GPIO_arready"/>
           </CONNECTIONS>
         </PORT>
-        <PORT DIR="I" LEFT="31" NAME="M05_AXI_rdata" RIGHT="0" SIGIS="undef" SIGNAME="Buttons_s_axi_rdata">
+        <PORT DIR="I" LEFT="31" NAME="M01_AXI_rdata" RIGHT="0" SIGIS="undef" SIGNAME="PmodOLED_0_AXI_LITE_GPIO_rdata">
           <CONNECTIONS>
-            <CONNECTION INSTANCE="Buttons" PORT="s_axi_rdata"/>
+            <CONNECTION INSTANCE="PmodOLED_0" PORT="AXI_LITE_GPIO_rdata"/>
           </CONNECTIONS>
         </PORT>
-        <PORT DIR="I" LEFT="1" NAME="M05_AXI_rresp" RIGHT="0" SIGIS="undef" SIGNAME="Buttons_s_axi_rresp">
+        <PORT DIR="I" LEFT="1" NAME="M01_AXI_rresp" RIGHT="0" SIGIS="undef" SIGNAME="PmodOLED_0_AXI_LITE_GPIO_rresp">
           <CONNECTIONS>
-            <CONNECTION INSTANCE="Buttons" PORT="s_axi_rresp"/>
+            <CONNECTION INSTANCE="PmodOLED_0" PORT="AXI_LITE_GPIO_rresp"/>
           </CONNECTIONS>
         </PORT>
-        <PORT DIR="I" NAME="M05_AXI_rvalid" SIGIS="undef" SIGNAME="Buttons_s_axi_rvalid">
+        <PORT DIR="I" NAME="M01_AXI_rvalid" SIGIS="undef" SIGNAME="PmodOLED_0_AXI_LITE_GPIO_rvalid">
           <CONNECTIONS>
-            <CONNECTION INSTANCE="Buttons" PORT="s_axi_rvalid"/>
+            <CONNECTION INSTANCE="PmodOLED_0" PORT="AXI_LITE_GPIO_rvalid"/>
           </CONNECTIONS>
         </PORT>
-        <PORT DIR="O" NAME="M05_AXI_rready" SIGIS="undef" SIGNAME="Buttons_s_axi_rready">
+        <PORT DIR="O" NAME="M01_AXI_rready" SIGIS="undef" SIGNAME="PmodOLED_0_AXI_LITE_GPIO_rready">
           <CONNECTIONS>
-            <CONNECTION INSTANCE="Buttons" PORT="s_axi_rready"/>
+            <CONNECTION INSTANCE="PmodOLED_0" PORT="AXI_LITE_GPIO_rready"/>
           </CONNECTIONS>
         </PORT>
         <PORT DIR="O" LEFT="31" NAME="M04_AXI_awaddr" RIGHT="0" SIGIS="undef" SIGNAME="led_ip_s_axi_awaddr">

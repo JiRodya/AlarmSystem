@@ -169,16 +169,14 @@ vcom -work xil_defaultlib -93 \
 "../../../bd/system/ip/system_rst_ps7_0_50M_0/sim/system_rst_ps7_0_50M_0.vhd" \
 "../../../bd/system/ip/system_axi_gpio_1_0/sim/system_axi_gpio_1_0.vhd" \
 "../../../bd/system/sim/system.vhd" \
+"../../../bd/system/ip/system_axi_gpio_0_1/sim/system_axi_gpio_0_1.vhd" \
+"../../../bd/system/ip/system_axi_gpio_1_1/sim/system_axi_gpio_1_1.vhd" \
 
 vlog -work axi_protocol_converter_v2_1_19  -v2k5 "+incdir+../../../../AlarmSystem.srcs/sources_1/bd/system/ipshared/ec67/hdl" "+incdir+../../../../AlarmSystem.srcs/sources_1/bd/system/ipshared/8c62/hdl" "+incdir+../../../../AlarmSystem.srcs/sources_1/bd/system/ip/system_processing_system7_0_0" "+incdir+C:/Xilinx/Vivado/2019.1/data/xilinx_vip/include" \
 "../../../../AlarmSystem.srcs/sources_1/bd/system/ipshared/c83a/hdl/axi_protocol_converter_v2_1_vl_rfs.v" \
 
 vlog -work xil_defaultlib  -v2k5 "+incdir+../../../../AlarmSystem.srcs/sources_1/bd/system/ipshared/ec67/hdl" "+incdir+../../../../AlarmSystem.srcs/sources_1/bd/system/ipshared/8c62/hdl" "+incdir+../../../../AlarmSystem.srcs/sources_1/bd/system/ip/system_processing_system7_0_0" "+incdir+C:/Xilinx/Vivado/2019.1/data/xilinx_vip/include" \
 "../../../bd/system/ip/system_auto_pc_0/sim/system_auto_pc_0.v" \
-
-vcom -work xil_defaultlib -93 \
-"../../../bd/system/ip/system_axi_gpio_0_1/sim/system_axi_gpio_0_1.vhd" \
-"../../../bd/system/ip/system_axi_gpio_1_1/sim/system_axi_gpio_1_1.vhd" \
 
 vlog -work xil_defaultlib \
 "glbl.v"

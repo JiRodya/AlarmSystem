@@ -1,8 +1,8 @@
 --Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
 ----------------------------------------------------------------------------------
 --Tool Version: Vivado v.2019.1 (win64) Build 2552052 Fri May 24 14:49:42 MDT 2019
---Date        : Wed Dec  6 18:57:26 2023
---Host        : DESKTOP-9DRVH73 running 64-bit major release  (build 9200)
+--Date        : Thu Dec  7 04:11:06 2023
+--Host        : Diane-Laptop running 64-bit major release  (build 9200)
 --Command     : generate_target system_wrapper.bd
 --Design      : system_wrapper
 --Purpose     : IP block netlist
@@ -59,7 +59,6 @@ end system_wrapper;
 architecture STRUCTURE of system_wrapper is
   component system is
   port (
-    btns_4bits_0_tri_i : in STD_LOGIC_VECTOR ( 3 downto 0 );
     DDR_cas_n : inout STD_LOGIC;
     DDR_cke : inout STD_LOGIC;
     DDR_ck_n : inout STD_LOGIC;
@@ -99,13 +98,7 @@ architecture STRUCTURE of system_wrapper is
     jc_pin7_o : out STD_LOGIC;
     jc_pin3_t : out STD_LOGIC;
     jc_pin8_o : out STD_LOGIC;
-    leds_4bits_tri_o : out STD_LOGIC_VECTOR ( 3 downto 0 );
-    FIXED_IO_mio : inout STD_LOGIC_VECTOR ( 53 downto 0 );
-    FIXED_IO_ddr_vrn : inout STD_LOGIC;
-    FIXED_IO_ddr_vrp : inout STD_LOGIC;
-    FIXED_IO_ps_srstb : inout STD_LOGIC;
-    FIXED_IO_ps_clk : inout STD_LOGIC;
-    FIXED_IO_ps_porb : inout STD_LOGIC;
+    btns_4bits_0_tri_i : in STD_LOGIC_VECTOR ( 3 downto 0 );
     jb_pin1_o : out STD_LOGIC;
     jb_pin7_i : in STD_LOGIC;
     jb_pin2_o : out STD_LOGIC;
@@ -130,6 +123,13 @@ architecture STRUCTURE of system_wrapper is
     jb_pin7_o : out STD_LOGIC;
     jb_pin3_t : out STD_LOGIC;
     jb_pin8_o : out STD_LOGIC;
+    FIXED_IO_mio : inout STD_LOGIC_VECTOR ( 53 downto 0 );
+    FIXED_IO_ddr_vrn : inout STD_LOGIC;
+    FIXED_IO_ddr_vrp : inout STD_LOGIC;
+    FIXED_IO_ps_srstb : inout STD_LOGIC;
+    FIXED_IO_ps_clk : inout STD_LOGIC;
+    FIXED_IO_ps_porb : inout STD_LOGIC;
+    leds_4bits_tri_o : out STD_LOGIC_VECTOR ( 3 downto 0 );
     sws_4bits_tri_i : in STD_LOGIC_VECTOR ( 3 downto 0 )
   );
   end component system;

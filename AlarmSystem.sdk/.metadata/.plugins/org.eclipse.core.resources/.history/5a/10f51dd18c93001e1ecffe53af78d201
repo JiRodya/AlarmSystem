@@ -1,9 +1,0 @@
-
-
-u8 int2bcd(u8 data) {
-   return (((data / 10) & 0xF) << 4) + ((data % 10) & 0xF);
-}
-
-u8 bcd2int(u8 data) {
-   return ((data >> 4) * 10) + (data & 0xF);
-}

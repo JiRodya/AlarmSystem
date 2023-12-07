@@ -1,4 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<session version="1.0">
-<refactoring comment="Rename resource &apos;AlarmSystem/inc/buttons.h&apos; to &apos;interaction.h&apos;" description="Rename resource &apos;buttons.h&apos;" flags="7" id="org.eclipse.ltk.core.refactoring.rename.resource" input="inc/buttons.h" name="interaction.h" stamp="1700704525870" updateReferences="true"/>
-</session>

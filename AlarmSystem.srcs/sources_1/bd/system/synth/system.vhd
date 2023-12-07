@@ -1,8 +1,8 @@
 --Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
 ----------------------------------------------------------------------------------
 --Tool Version: Vivado v.2019.1 (win64) Build 2552052 Fri May 24 14:49:42 MDT 2019
---Date        : Wed Dec  6 18:57:26 2023
---Host        : DESKTOP-9DRVH73 running 64-bit major release  (build 9200)
+--Date        : Thu Dec  7 04:11:05 2023
+--Host        : Diane-Laptop running 64-bit major release  (build 9200)
 --Command     : generate_target system.bd
 --Design      : system
 --Purpose     : IP block netlist
@@ -2385,6 +2385,7 @@ architecture STRUCTURE of system is
   signal PmodOLED_0_Pmod_out_PIN9_I : STD_LOGIC;
   signal PmodOLED_0_Pmod_out_PIN9_O : STD_LOGIC;
   signal PmodOLED_0_Pmod_out_PIN9_T : STD_LOGIC;
+  signal PmodRTCC_0_I2C_Interrupt : STD_LOGIC;
   signal PmodRTCC_0_Pmod_out_PIN10_I : STD_LOGIC;
   signal PmodRTCC_0_Pmod_out_PIN10_O : STD_LOGIC;
   signal PmodRTCC_0_Pmod_out_PIN10_T : STD_LOGIC;
@@ -2409,7 +2410,6 @@ architecture STRUCTURE of system is
   signal PmodRTCC_0_Pmod_out_PIN9_I : STD_LOGIC;
   signal PmodRTCC_0_Pmod_out_PIN9_O : STD_LOGIC;
   signal PmodRTCC_0_Pmod_out_PIN9_T : STD_LOGIC;
-  signal Switches_ip2intc_irpt : STD_LOGIC;
   signal axi_gpio_0_GPIO_TRI_I : STD_LOGIC_VECTOR ( 3 downto 0 );
   signal axi_gpio_1_GPIO1_TRI_I : STD_LOGIC_VECTOR ( 3 downto 0 );
   signal axi_gpio_1_GPIO_TRI_O : STD_LOGIC_VECTOR ( 3 downto 0 );
@@ -2577,7 +2577,7 @@ architecture STRUCTURE of system is
   signal ps7_0_axi_periph_M05_AXI_WSTRB : STD_LOGIC_VECTOR ( 3 downto 0 );
   signal ps7_0_axi_periph_M05_AXI_WVALID : STD_LOGIC;
   signal rst_ps7_0_50M_peripheral_aresetn : STD_LOGIC_VECTOR ( 0 to 0 );
-  signal NLW_PmodRTCC_0_I2C_Interrupt_UNCONNECTED : STD_LOGIC;
+  signal NLW_Switches_ip2intc_irpt_UNCONNECTED : STD_LOGIC;
   signal NLW_processing_system7_0_I2C0_SCL_O_UNCONNECTED : STD_LOGIC;
   signal NLW_processing_system7_0_I2C0_SCL_T_UNCONNECTED : STD_LOGIC;
   signal NLW_processing_system7_0_I2C0_SDA_O_UNCONNECTED : STD_LOGIC;
@@ -2830,7 +2830,7 @@ PmodRTCC_0: component system_PmodRTCC_0_0
       AXI_LITE_IIC_wready => ps7_0_axi_periph_M02_AXI_WREADY,
       AXI_LITE_IIC_wstrb(3 downto 0) => ps7_0_axi_periph_M02_AXI_WSTRB(3 downto 0),
       AXI_LITE_IIC_wvalid => ps7_0_axi_periph_M02_AXI_WVALID,
-      I2C_Interrupt => NLW_PmodRTCC_0_I2C_Interrupt_UNCONNECTED,
+      I2C_Interrupt => PmodRTCC_0_I2C_Interrupt,
       Pmod_out_pin10_i => PmodRTCC_0_Pmod_out_PIN10_I,
       Pmod_out_pin10_o => PmodRTCC_0_Pmod_out_PIN10_O,
       Pmod_out_pin10_t => PmodRTCC_0_Pmod_out_PIN10_T,
@@ -2861,7 +2861,7 @@ PmodRTCC_0: component system_PmodRTCC_0_0
 Switches: component system_axi_gpio_0_1
      port map (
       gpio_io_i(3 downto 0) => axi_gpio_0_GPIO_TRI_I(3 downto 0),
-      ip2intc_irpt => Switches_ip2intc_irpt,
+      ip2intc_irpt => NLW_Switches_ip2intc_irpt_UNCONNECTED,
       s_axi_aclk => processing_system7_0_FCLK_CLK0,
       s_axi_araddr(8 downto 0) => ps7_0_axi_periph_M03_AXI_ARADDR(8 downto 0),
       s_axi_aresetn => rst_ps7_0_50M_peripheral_aresetn(0),
@@ -2933,7 +2933,7 @@ processing_system7_0: component system_processing_system7_0_0
       I2C0_SDA_I => '0',
       I2C0_SDA_O => NLW_processing_system7_0_I2C0_SDA_O_UNCONNECTED,
       I2C0_SDA_T => NLW_processing_system7_0_I2C0_SDA_T_UNCONNECTED,
-      IRQ_F2P(0) => Switches_ip2intc_irpt,
+      IRQ_F2P(0) => PmodRTCC_0_I2C_Interrupt,
       MIO(53 downto 0) => FIXED_IO_mio(53 downto 0),
       M_AXI_GP0_ACLK => processing_system7_0_FCLK_CLK0,
       M_AXI_GP0_ARADDR(31 downto 0) => processing_system7_0_M_AXI_GP0_ARADDR(31 downto 0),

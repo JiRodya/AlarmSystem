@@ -1,4 +1,0 @@
-#include "xgpio.h"
-
-extern XGpio dip, push,led;
-int psb_check, dip_check, dip_check_prev, count;

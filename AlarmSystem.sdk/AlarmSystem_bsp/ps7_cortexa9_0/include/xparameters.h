@@ -327,13 +327,13 @@
 
 /* Definitions for Fabric interrupts connected to ps7_scugic_0 */
 #define XPAR_FABRIC_BUTTONS_IP2INTC_IRPT_INTR 28U
-#define XPAR_FABRIC_SWITCHES_IP2INTC_IRPT_INTR 61U
+#define XPAR_FABRIC_PMODRTCC_0_I2C_INTERRUPT_INTR 61U
 
 /******************************************************************/
 
 /* Canonical definitions for Fabric interrupts connected to ps7_scugic_0 */
 #define XPAR_FABRIC_GPIO_0_VEC_ID XPAR_FABRIC_BUTTONS_IP2INTC_IRPT_INTR
-#define XPAR_FABRIC_GPIO_1_VEC_ID XPAR_FABRIC_SWITCHES_IP2INTC_IRPT_INTR
+#define XPAR_FABRIC_PMODRTCC_0_VEC_ID XPAR_FABRIC_PMODRTCC_0_I2C_INTERRUPT_INTR
 
 /******************************************************************/
 

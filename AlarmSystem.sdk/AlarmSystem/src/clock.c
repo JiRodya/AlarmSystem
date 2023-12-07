@@ -2,7 +2,6 @@
 // Declaration of clock module functions
 
 
-// clock.c
 #include "clock.h"
 #include "sleep.h"
 #include "xil_cache.h"

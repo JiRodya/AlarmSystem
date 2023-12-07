@@ -1,7 +1,0 @@
-#ifndef DATA_HANDLE_H
-#define DATA_HANDLE_H
-
-u8 int2bcd(u8 data);
-u8 bcd2int(u8 data);
-
-#endif
