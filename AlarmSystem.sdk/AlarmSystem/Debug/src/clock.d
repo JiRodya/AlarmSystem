@@ -17,7 +17,8 @@ src/clock.o src/clock.o: ../src/clock.c \
  ../../AlarmSystem_bsp/ps7_cortexa9_0/include/sleep.h \
  ../../AlarmSystem_bsp/ps7_cortexa9_0/include/xil_cache.h \
  ../../AlarmSystem_bsp/ps7_cortexa9_0/include/xparameters.h \
- C:\X_Projects\AlarmSystem\AlarmSystem.sdk\AlarmSystem\inc/data_handle.h
+ C:\X_Projects\AlarmSystem\AlarmSystem.sdk\AlarmSystem\inc/data_handle.h \
+ C:\X_Projects\AlarmSystem\AlarmSystem.sdk\AlarmSystem\inc/clock.h
 
 C:\X_Projects\AlarmSystem\AlarmSystem.sdk\AlarmSystem\inc/clock.h:
 
@@ -56,3 +57,5 @@ C:\X_Projects\AlarmSystem\AlarmSystem.sdk\AlarmSystem\inc/clock.h:
 ../../AlarmSystem_bsp/ps7_cortexa9_0/include/xparameters.h:
 
 C:\X_Projects\AlarmSystem\AlarmSystem.sdk\AlarmSystem\inc/data_handle.h:
+
+C:\X_Projects\AlarmSystem\AlarmSystem.sdk\AlarmSystem\inc/clock.h:

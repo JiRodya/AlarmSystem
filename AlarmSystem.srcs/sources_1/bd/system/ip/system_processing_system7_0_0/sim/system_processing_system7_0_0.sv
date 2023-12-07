@@ -738,7 +738,6 @@
   M_AXI_GP0_RDATA,
   IRQ_F2P,
   Core0_nFIQ,
-  Core0_nIRQ,
   FCLK_CLK0,
   FCLK_RESET0_N,
   MIO,
@@ -886,7 +885,6 @@
       input  [31 : 0] M_AXI_GP0_RDATA;
       input  [0 : 0] IRQ_F2P;
       input  Core0_nFIQ;
-      input  Core0_nIRQ;
       output  FCLK_CLK0;
       output  FCLK_RESET0_N;
       inout  [53 : 0] MIO;

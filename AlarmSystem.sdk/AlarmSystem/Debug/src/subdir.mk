@@ -11,6 +11,7 @@ C_SRCS += \
 ../src/data_handle.c \
 ../src/interrupt_handler.c \
 ../src/io.c \
+../src/lab7.c \
 ../src/main.c \
 ../src/oled.c 
 
@@ -19,6 +20,7 @@ OBJS += \
 ./src/data_handle.o \
 ./src/interrupt_handler.o \
 ./src/io.o \
+./src/lab7.o \
 ./src/main.o \
 ./src/oled.o 
 
@@ -27,6 +29,7 @@ C_DEPS += \
 ./src/data_handle.d \
 ./src/interrupt_handler.d \
 ./src/io.d \
+./src/lab7.d \
 ./src/main.d \
 ./src/oled.d 
 

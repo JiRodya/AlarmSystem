@@ -2,20 +2,27 @@
 #define IO_H
 
 #include <stdint.h>
-#include "xgpio.h" // Assuming use of Xilinx GPIO driver
-#include "xscutimer.h"
-
-// Global variables for device instances
-static XGpio LedInstance;
-static XGpio ButtonInstance;
-static XGpio SwitchInstance;
+#include "xgpio.h" // Use of Xilinx GPIO driver
 
 #define LED_CHANNEL 1
+#define DEBOUNCE_DELAY 20000 // 20 milliseconds
 
-// PS Timer related definitions
-XScuTimer_Config *ConfigPtr;
-extern XScuTimer Timer; // Declare Timer as extern
-extern XScuTimer *TimerInstancePtr; // Declare TimerInstancePtr as extern
+// Extern declarations for global variables (defined in io.c)
+extern XGpio led;
+extern XGpio push;
+extern XGpio dip;
+extern int led_count;
+
+#define LED_CHANNEL 1
+#define BUTTON1_MASK 0x01 // First button on bit 0
+#define BUTTON2_MASK 0x02 // Second button on bit 1
+#define BUTTON3_MASK 0x04 // Third button on bit 2
+#define BUTTON4_MASK 0x08 // Fourth button on bit 3
+
+#define BUTTON_INTR_MASK 0x0F
+
+// Extern declarations for Timer (defined in interrupt_handler.c)
+
 
 typedef enum {
     LED_ALARM,      // Blinking pattern for alarm
@@ -23,14 +30,8 @@ typedef enum {
 } LED_State;
 
 // Function prototypes
-void IO_Initialize();
-void IO_SetLedValue(LED_State state, uint8_t counterValue) ;
-uint8_t IO_ReadButtonValue();
-uint8_t IO_ReadSwitchValue();
-void IO_EnableInterrupts();
-void IO_DisableInterrupts();
-void IO_RegisterInterruptHandler(XInterruptHandler handler, void *data);
-void IO_ButtonInterruptHandler(void *InstancePtr);
-void IO_SwitchInterruptHandler(void *InstancePtr);
+int IO_Initialize();
+void IO_SetLedValue(LED_State state, uint8_t counterValue);
+
 
 #endif // IO_H

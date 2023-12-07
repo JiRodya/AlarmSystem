@@ -17,7 +17,6 @@ proc create_report { reportName command } {
     send_msg_id runtcl-5 warning "$msg"
   }
 }
-set_param chipscope.maxJobs 8
 create_project -in_memory -part xc7z020clg400-1
 
 set_param project.singleFileAddWarning.threshold 0
@@ -61,13 +60,13 @@ set_property used_in_implementation false [get_files -all c:/X_Projects/AlarmSys
 set_property used_in_implementation false [get_files -all c:/X_Projects/AlarmSystem/AlarmSystem.srcs/sources_1/bd/system/ip/system_axi_gpio_1_0/system_axi_gpio_1_0_board.xdc]
 set_property used_in_implementation false [get_files -all c:/X_Projects/AlarmSystem/AlarmSystem.srcs/sources_1/bd/system/ip/system_axi_gpio_1_0/system_axi_gpio_1_0_ooc.xdc]
 set_property used_in_implementation false [get_files -all c:/X_Projects/AlarmSystem/AlarmSystem.srcs/sources_1/bd/system/ip/system_axi_gpio_1_0/system_axi_gpio_1_0.xdc]
-set_property used_in_implementation false [get_files -all c:/X_Projects/AlarmSystem/AlarmSystem.srcs/sources_1/bd/system/ip/system_auto_pc_0/system_auto_pc_0_ooc.xdc]
 set_property used_in_implementation false [get_files -all c:/X_Projects/AlarmSystem/AlarmSystem.srcs/sources_1/bd/system/ip/system_axi_gpio_0_1/system_axi_gpio_0_1_board.xdc]
 set_property used_in_implementation false [get_files -all c:/X_Projects/AlarmSystem/AlarmSystem.srcs/sources_1/bd/system/ip/system_axi_gpio_0_1/system_axi_gpio_0_1_ooc.xdc]
 set_property used_in_implementation false [get_files -all c:/X_Projects/AlarmSystem/AlarmSystem.srcs/sources_1/bd/system/ip/system_axi_gpio_0_1/system_axi_gpio_0_1.xdc]
 set_property used_in_implementation false [get_files -all c:/X_Projects/AlarmSystem/AlarmSystem.srcs/sources_1/bd/system/ip/system_axi_gpio_1_1/system_axi_gpio_1_1_board.xdc]
 set_property used_in_implementation false [get_files -all c:/X_Projects/AlarmSystem/AlarmSystem.srcs/sources_1/bd/system/ip/system_axi_gpio_1_1/system_axi_gpio_1_1_ooc.xdc]
 set_property used_in_implementation false [get_files -all c:/X_Projects/AlarmSystem/AlarmSystem.srcs/sources_1/bd/system/ip/system_axi_gpio_1_1/system_axi_gpio_1_1.xdc]
+set_property used_in_implementation false [get_files -all c:/X_Projects/AlarmSystem/AlarmSystem.srcs/sources_1/bd/system/ip/system_auto_pc_0/system_auto_pc_0_ooc.xdc]
 set_property used_in_implementation false [get_files -all C:/X_Projects/AlarmSystem/AlarmSystem.srcs/sources_1/bd/system/system_ooc.xdc]
 
 # Mark all dcp files as not used in implementation to prevent them from being

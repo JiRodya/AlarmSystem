@@ -1,7 +1,7 @@
 Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------
 | Tool Version     : Vivado v.2019.1 (win64) Build 2552052 Fri May 24 14:49:42 MDT 2019
-| Date             : Fri Dec  1 19:17:31 2023
+| Date             : Wed Dec  6 18:58:36 2023
 | Host             : DESKTOP-9DRVH73 running 64-bit major release  (build 9200)
 | Command          : report_power -file system_wrapper_power_routed.rpt -pb system_wrapper_power_summary_routed.pb -rpx system_wrapper_power_routed.rpx
 | Design           : system_wrapper
@@ -52,16 +52,16 @@ Table of Contents
 +--------------------------+-----------+----------+-----------+-----------------+
 | On-Chip                  | Power (W) | Used     | Available | Utilization (%) |
 +--------------------------+-----------+----------+-----------+-----------------+
-| Clocks                   |     0.005 |        3 |       --- |             --- |
-| Slice Logic              |     0.001 |     4454 |       --- |             --- |
-|   LUT as Logic           |     0.001 |     1545 |     53200 |            2.90 |
+| Clocks                   |     0.004 |        3 |       --- |             --- |
+| Slice Logic              |     0.001 |     4449 |       --- |             --- |
+|   LUT as Logic           |     0.001 |     1539 |     53200 |            2.89 |
 |   Register               |    <0.001 |     2018 |    106400 |            1.90 |
 |   CARRY4                 |    <0.001 |       29 |     13300 |            0.22 |
 |   LUT as Distributed RAM |    <0.001 |       16 |     17400 |            0.09 |
 |   LUT as Shift Register  |    <0.001 |       72 |     17400 |            0.41 |
 |   F7/F8 Muxes            |    <0.001 |       13 |     53200 |            0.02 |
 |   Others                 |     0.000 |      371 |       --- |             --- |
-| Signals                  |     0.002 |     3131 |       --- |             --- |
+| Signals                  |     0.002 |     3125 |       --- |             --- |
 | I/O                      |     0.001 |       28 |       125 |           22.40 |
 | PS7                      |     1.394 |        1 |       --- |             --- |
 | Static Power             |     0.141 |          |           |                 |
@@ -75,7 +75,7 @@ Table of Contents
 +-----------+-------------+-----------+-------------+------------+
 | Source    | Voltage (V) | Total (A) | Dynamic (A) | Static (A) |
 +-----------+-------------+-----------+-------------+------------+
-| Vccint    |       1.000 |     0.021 |       0.008 |      0.014 |
+| Vccint    |       1.000 |     0.021 |       0.007 |      0.014 |
 | Vccaux    |       1.800 |     0.015 |       0.000 |      0.015 |
 | Vcco33    |       3.300 |     0.001 |       0.000 |      0.001 |
 | Vcco25    |       2.500 |     0.000 |       0.000 |      0.000 |
@@ -153,8 +153,8 @@ Table of Contents
 +--------------------------+-----------+
 | system_wrapper           |     1.402 |
 |   system_i               |     1.401 |
-|     PmodOLED_0           |     0.003 |
-|       inst               |     0.003 |
+|     PmodOLED_0           |     0.002 |
+|       inst               |     0.002 |
 |     PmodRTCC_0           |     0.001 |
 |       inst               |     0.001 |
 |     processing_system7_0 |     1.394 |

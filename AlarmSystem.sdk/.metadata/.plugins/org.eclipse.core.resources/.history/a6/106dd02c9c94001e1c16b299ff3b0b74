@@ -1,0 +1,3 @@
+#include "xgpio.h"
+
+extern XGpio dip, push,led;

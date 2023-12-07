@@ -1,0 +1,87 @@
+#include "interrupt_handler.h"
+#include "oled.h"
+#include "clock.h"
+#include "data_handle.h"
+#include "io.h"
+
+
+#include <stdio.h>
+
+#include "xscutimer.h"
+#include "xscugic.h"
+#include "xgpio.h"
+#include "xil_printf.h"
+
+#define ONE_TENTH 32500000 // Half of the CPU clock speed/10
+
+//--global variables
+extern XGpio led, dip, push;
+extern int led_count;
+
+//--local variables
+int psb_check, dip_check, dip_check_prev, count;
+char timeBuffer [100];
+char dateBuffer [100];
+
+//--function prototypes
+static int Init_Peripherals();
+
+int main(){
+
+	//--SETUP--
+
+	//--init vars
+	xil_printf("-- CLOCK SYSTEM --\r\n");
+	count = 0;
+
+	//--init peripherals
+	Init_Peripherals();
+	xil_printf("Peripherals done\r\n");
+
+	//--interrupts
+	Init_GIC();
+	Configure_GIC();
+	EnableInts();
+	ExceptionInit();
+	xil_printf("Interrupts On");
+
+	//--timer setup
+	XScuTimer_LoadTimer(&Timer, ONE_TENTH*dip_check_prev);
+	XScuTimer_EnableAutoReload(&Timer);
+	XScuTimer_Start (&Timer);
+	xil_printf("Timer on !\r\n");
+
+	//--clock time setup
+	Time currentTime = Clock_GetTime(CLOCK);
+	FormatDate(currentTime, timeBuffer);
+	FormatTime(currentTime, timeBuffer);
+	xil_printf("time: %s | date: %s ||\r\n", timeBuffer, dateBuffer);
+
+	//--initial button, switch values
+	dip_check_prev = XGpio_DiscreteRead(&dip, 1);
+
+
+
+
+}
+
+static int Init_Peripherals(){
+	int xResult;
+	xil_printf("initializing peripherals\r\n");
+	//--init led, switch and buttons
+	xResult = IO_Initialize();
+	if (xResult != XST_SUCCESS){
+		xil_printf("GPIOs init failed\r\n");
+		return XST_FAILURE;
+	}
+
+
+	//--init timer
+	ConfigPtr = XScuTimer_LookupConfig (XPAR_PS7_SCUTIMER_0_DEVICE_ID);
+	xResult = XScuTimer_CfgInitialize(&Timer, ConfigPtr, ConfigPtr->BaseAddr);
+
+	//--init clock and oled
+	OLED_Initialize();
+	Clock_Init(SET_CLOCK);
+	return xResult;
+}

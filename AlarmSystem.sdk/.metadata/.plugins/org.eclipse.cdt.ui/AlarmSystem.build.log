@@ -1,8 +1,8 @@
-16:15:40 **** Incremental Build of configuration Debug for project AlarmSystem ****
+03:42:41 **** Incremental Build of configuration Debug for project AlarmSystem ****
 make pre-build main-build 
 a9-linaro-pre-build-step
 ' '
 make: Nothing to be done for 'main-build'.
 
-16:15:40 Build Finished (took 150ms)
+03:42:41 Build Finished (took 141ms)
 

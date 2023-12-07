@@ -1,0 +1,172 @@
+#include "interrupt_handler.h"
+#include "oled.h"
+#include "clock.h"
+#include "data_handle.h"
+#include "io.h"
+
+
+#include <stdio.h>
+
+#include "xscutimer.h"
+#include "xscugic.h"
+#include "xgpio.h"
+#include "xil_printf.h"
+
+#define ONE_TENTH 32500000 // Half of the CPU clock speed/10
+
+//------global variables------
+extern XGpio led, dip, push;
+extern int led_count;
+extern PmodOLED oled;
+extern PmodRTCC clock;
+extern u8 AlarmTriggered;
+
+//------local variables------
+int psb_check, dip_check, dip_check_prev, count = 10;
+char timeBuffer [100];
+char dateBuffer [100];
+char* infoBuffer;
+
+//---
+//Time today;
+
+
+// PS Timer related definitions
+XScuTimer_Config *ConfigPtr;
+XScuTimer Timer;		/* Cortex A9 SCU Private Timer Instance */
+XScuTimer *TimerInstancePtr = &Timer;
+
+//------function prototypes------
+static int Init_Peripherals();
+
+int main(){
+
+	//--SETUP--
+
+	//--init vars
+	xil_printf("-- CLOCK SYSTEM --\r\n\n");
+	count = 0;
+
+	xil_printf("-Init process-\r\n");
+	//--init peripherals
+	Init_Peripherals();
+
+
+	//--interrupts
+	Init_GIC();
+	Configure_GIC();
+	EnableInts();
+	ExceptionInit();
+
+
+	//--initial button, switch values
+	dip_check_prev = XGpio_DiscreteRead(&dip, 1);
+
+	//--timer setup
+	XScuTimer_LoadTimer(&Timer, ONE_TENTH*dip_check_prev);
+	XScuTimer_EnableAutoReload(&Timer);
+	XScuTimer_Start (&Timer);
+	xil_printf("Timer ON !\r\n");
+
+	//--clock time setup
+	Time currentTime = Clock_GetTime(CLOCK);
+	FormatDate(currentTime, dateBuffer );
+	FormatTime(currentTime, timeBuffer);
+	xil_printf("-Init process DONE-\r\n\n");
+	xil_printf("time: %s | date: %s ||\r\n", timeBuffer, dateBuffer);
+
+	//--set prev alarm
+	Time alarm = Clock_IncrementTime(currentTime, 30);
+	FormatDate(currentTime, dateBuffer );
+	FormatTime(currentTime, timeBuffer);
+	Clock_SetAlarm(alarm);
+
+	Oled_WriteToDateSection(dateBuffer);
+	Oled_WriteToTimeSection(timeBuffer);
+
+	while(TRUE){
+		// Read push buttons and break the loop if Center button pressed
+		psb_check = XGpio_DiscreteRead(&push, 1);
+		if(psb_check > 0)
+			 xil_printf("Push button Status %x\r\n", psb_check);
+
+		if(psb_check == 8)
+		{
+		  xil_printf("Push button pressed: Exiting\r\n");
+		  XScuTimer_Stop(TimerInstancePtr);
+		}
+		dip_check = XGpio_DiscreteRead(&dip, 1);
+		if (dip_check != dip_check_prev) {
+			xil_printf("DIP Switch Status %x, %x\r\n", dip_check_prev, dip_check);
+			dip_check_prev = dip_check;
+			XScuTimer_LoadTimer(TimerInstancePtr, ONE_TENTH * dip_check);
+			led_count = 10; // Reset here as well
+			count = 10;
+		}
+
+		if(XScuTimer_IsExpired(TimerInstancePtr)) {
+			// clear status bit
+			XScuTimer_ClearInterruptStatus(TimerInstancePtr);
+
+			if(count <=0)
+				count = 10;
+			// output the count to LED and increment the count
+			XGpio_DiscreteWrite(&led, LED_CHANNEL, count);
+			count--;
+		}
+
+		//--Update time
+		Time currentTime = Clock_GetTime(CLOCK);
+		FormatDate(currentTime, dateBuffer );
+		FormatTime(currentTime, timeBuffer);
+
+		//--Update time and date on screen
+		Oled_WriteToDateSection(dateBuffer);
+		Oled_WriteToTimeSection(timeBuffer);
+
+		//--Update active alarm section
+		infoBuffer = (Clock_IsAlarmActive())? " %" : "    ";
+		Oled_WriteToInfoSection(infoBuffer);
+
+		//--check for count down
+
+		//--check if Alarm went off
+		if (RTCC_checkFlag(&clock, RTCC_TARGET_ALM0)) {
+			AlarmTriggered = 1;
+		 // Alarm 0 has been triggered
+		 xil_printf("ALARM 0!!!");
+		 // Disable alarm 0
+		 RTCC_disableAlarm(&clock, RTCC_TARGET_ALM0);
+		 xil_printf("\r\n");
+	  }
+
+
+	}
+	DisableIntr();
+	return 0;
+
+}
+
+static int Init_Peripherals(){
+	int xResult;
+	//--init led, switch and buttons
+	xResult = IO_Initialize();
+	if (xResult != XST_SUCCESS){
+		xil_printf("GPIOs init failed\r\n");
+		return XST_FAILURE;
+	}
+
+
+	//--init timer
+	ConfigPtr = XScuTimer_LookupConfig (XPAR_PS7_SCUTIMER_0_DEVICE_ID);
+	xResult = XScuTimer_CfgInitialize(&Timer, ConfigPtr, ConfigPtr->BaseAddr);
+	if (xResult != XST_SUCCESS){
+		  xil_printf("Timer init() failed\r\n");
+		  return XST_FAILURE;
+	  }
+
+	//--init clock and oled
+	Oled_Init();
+	Clock_Init(SET_CLOCK);
+	return xResult;
+}

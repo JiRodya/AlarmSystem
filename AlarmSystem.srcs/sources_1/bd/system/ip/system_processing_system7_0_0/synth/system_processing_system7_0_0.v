@@ -119,7 +119,6 @@ module system_processing_system7_0_0 (
   M_AXI_GP0_RDATA,
   IRQ_F2P,
   Core0_nFIQ,
-  Core0_nIRQ,
   FCLK_CLK0,
   FCLK_RESET0_N,
   MIO,
@@ -272,9 +271,6 @@ input wire [0 : 0] IRQ_F2P;
 (* X_INTERFACE_PARAMETER = "XIL_INTERFACENAME Core0_nFIQ, SENSITIVITY LEVEL_HIGH, PortWidth 1" *)
 (* X_INTERFACE_INFO = "xilinx.com:signal:interrupt:1.0 Core0_nFIQ INTERRUPT" *)
 input wire Core0_nFIQ;
-(* X_INTERFACE_PARAMETER = "XIL_INTERFACENAME Core0_nIRQ, SENSITIVITY LEVEL_HIGH, PortWidth 1" *)
-(* X_INTERFACE_INFO = "xilinx.com:signal:interrupt:1.0 Core0_nIRQ INTERRUPT" *)
-input wire Core0_nIRQ;
 (* X_INTERFACE_PARAMETER = "XIL_INTERFACENAME FCLK_CLK0, FREQ_HZ 50000000, PHASE 0.000, CLK_DOMAIN system_processing_system7_0_0_FCLK_CLK0, INSERT_VIP 0" *)
 (* X_INTERFACE_INFO = "xilinx.com:signal:clock:1.0 FCLK_CLK0 CLK" *)
 output wire FCLK_CLK0;
@@ -960,7 +956,7 @@ inout wire PS_PORB;
     .IRQ_P2F_CAN1(),
     .IRQ_F2P(IRQ_F2P),
     .Core0_nFIQ(Core0_nFIQ),
-    .Core0_nIRQ(Core0_nIRQ),
+    .Core0_nIRQ(1'B0),
     .Core1_nFIQ(1'B0),
     .Core1_nIRQ(1'B0),
     .DMA0_DATYPE(),

@@ -173,13 +173,6 @@ proc create_root_design { parentCell } {
 
   # Create ports
 
-  # Create instance: Alarm_Output, and set properties
-  set Alarm_Output [ create_bd_cell -type ip -vlnv xilinx.com:ip:axi_gpio:2.0 Alarm_Output ]
-  set_property -dict [ list \
-   CONFIG.GPIO_BOARD_INTERFACE {leds_4bits} \
-   CONFIG.USE_BOARD_FLOW {true} \
- ] $Alarm_Output
-
   # Create instance: Buttons, and set properties
   set Buttons [ create_bd_cell -type ip -vlnv xilinx.com:ip:axi_gpio:2.0 Buttons ]
   set_property -dict [ list \
@@ -209,6 +202,13 @@ proc create_root_design { parentCell } {
    CONFIG.GPIO_BOARD_INTERFACE {sws_4bits} \
    CONFIG.USE_BOARD_FLOW {true} \
  ] $Switches
+
+  # Create instance: led_ip, and set properties
+  set led_ip [ create_bd_cell -type ip -vlnv xilinx.com:ip:axi_gpio:2.0 led_ip ]
+  set_property -dict [ list \
+   CONFIG.GPIO_BOARD_INTERFACE {leds_4bits} \
+   CONFIG.USE_BOARD_FLOW {true} \
+ ] $led_ip
 
   # Create instance: processing_system7_0, and set properties
   set processing_system7_0 [ create_bd_cell -type ip -vlnv xilinx.com:ip:processing_system7:5.5 processing_system7_0 ]
@@ -246,7 +246,8 @@ proc create_root_design { parentCell } {
    CONFIG.PCW_CLK2_FREQ {10000000} \
    CONFIG.PCW_CLK3_FREQ {10000000} \
    CONFIG.PCW_CORE0_FIQ_INTR {1} \
-   CONFIG.PCW_CORE0_IRQ_INTR {1} \
+   CONFIG.PCW_CORE0_IRQ_INTR {0} \
+   CONFIG.PCW_CORE1_FIQ_INTR {0} \
    CONFIG.PCW_CPU_CPU_6X4X_MAX_RANGE {667} \
    CONFIG.PCW_CPU_CPU_PLL_FREQMHZ {1333.333} \
    CONFIG.PCW_CPU_PERIPHERAL_CLKSRC {ARM PLL} \
@@ -721,7 +722,7 @@ proc create_root_design { parentCell } {
   connect_bd_intf_net -intf_net PmodOLED_0_Pmod_out [get_bd_intf_ports jc] [get_bd_intf_pins PmodOLED_0/Pmod_out]
   connect_bd_intf_net -intf_net PmodRTCC_0_Pmod_out [get_bd_intf_ports jb] [get_bd_intf_pins PmodRTCC_0/Pmod_out]
   connect_bd_intf_net -intf_net axi_gpio_0_GPIO [get_bd_intf_ports sws_4bits] [get_bd_intf_pins Switches/GPIO]
-  connect_bd_intf_net -intf_net axi_gpio_1_GPIO [get_bd_intf_ports leds_4bits] [get_bd_intf_pins Alarm_Output/GPIO]
+  connect_bd_intf_net -intf_net axi_gpio_1_GPIO [get_bd_intf_ports leds_4bits] [get_bd_intf_pins led_ip/GPIO]
   connect_bd_intf_net -intf_net axi_gpio_1_GPIO1 [get_bd_intf_ports btns_4bits_0] [get_bd_intf_pins Buttons/GPIO]
   connect_bd_intf_net -intf_net processing_system7_0_DDR [get_bd_intf_ports DDR] [get_bd_intf_pins processing_system7_0/DDR]
   connect_bd_intf_net -intf_net processing_system7_0_FIXED_IO [get_bd_intf_ports FIXED_IO] [get_bd_intf_pins processing_system7_0/FIXED_IO]
@@ -730,19 +731,18 @@ proc create_root_design { parentCell } {
   connect_bd_intf_net -intf_net ps7_0_axi_periph_M01_AXI [get_bd_intf_pins PmodOLED_0/AXI_LITE_GPIO] [get_bd_intf_pins ps7_0_axi_periph/M01_AXI]
   connect_bd_intf_net -intf_net ps7_0_axi_periph_M02_AXI [get_bd_intf_pins PmodRTCC_0/AXI_LITE_IIC] [get_bd_intf_pins ps7_0_axi_periph/M02_AXI]
   connect_bd_intf_net -intf_net ps7_0_axi_periph_M03_AXI [get_bd_intf_pins Switches/S_AXI] [get_bd_intf_pins ps7_0_axi_periph/M03_AXI]
-  connect_bd_intf_net -intf_net ps7_0_axi_periph_M04_AXI [get_bd_intf_pins Alarm_Output/S_AXI] [get_bd_intf_pins ps7_0_axi_periph/M04_AXI]
+  connect_bd_intf_net -intf_net ps7_0_axi_periph_M04_AXI [get_bd_intf_pins led_ip/S_AXI] [get_bd_intf_pins ps7_0_axi_periph/M04_AXI]
   connect_bd_intf_net -intf_net ps7_0_axi_periph_M05_AXI [get_bd_intf_pins Buttons/S_AXI] [get_bd_intf_pins ps7_0_axi_periph/M05_AXI]
 
   # Create port connections
-  connect_bd_net -net Buttons_ip2intc_irpt [get_bd_pins Buttons/ip2intc_irpt] [get_bd_pins processing_system7_0/IRQ_F2P]
-  connect_bd_net -net PmodRTCC_0_I2C_Interrupt [get_bd_pins PmodRTCC_0/I2C_Interrupt] [get_bd_pins processing_system7_0/Core0_nFIQ]
-  connect_bd_net -net Switches_ip2intc_irpt [get_bd_pins Switches/ip2intc_irpt] [get_bd_pins processing_system7_0/Core0_nIRQ]
-  connect_bd_net -net processing_system7_0_FCLK_CLK0 [get_bd_pins Alarm_Output/s_axi_aclk] [get_bd_pins Buttons/s_axi_aclk] [get_bd_pins PmodOLED_0/s_axi_aclk] [get_bd_pins PmodRTCC_0/s_axi_aclk] [get_bd_pins Switches/s_axi_aclk] [get_bd_pins processing_system7_0/FCLK_CLK0] [get_bd_pins processing_system7_0/M_AXI_GP0_ACLK] [get_bd_pins ps7_0_axi_periph/ACLK] [get_bd_pins ps7_0_axi_periph/M00_ACLK] [get_bd_pins ps7_0_axi_periph/M01_ACLK] [get_bd_pins ps7_0_axi_periph/M02_ACLK] [get_bd_pins ps7_0_axi_periph/M03_ACLK] [get_bd_pins ps7_0_axi_periph/M04_ACLK] [get_bd_pins ps7_0_axi_periph/M05_ACLK] [get_bd_pins ps7_0_axi_periph/S00_ACLK] [get_bd_pins rst_ps7_0_50M/slowest_sync_clk]
+  connect_bd_net -net Buttons_ip2intc_irpt [get_bd_pins Buttons/ip2intc_irpt] [get_bd_pins processing_system7_0/Core0_nFIQ]
+  connect_bd_net -net Switches_ip2intc_irpt [get_bd_pins Switches/ip2intc_irpt] [get_bd_pins processing_system7_0/IRQ_F2P]
+  connect_bd_net -net processing_system7_0_FCLK_CLK0 [get_bd_pins Buttons/s_axi_aclk] [get_bd_pins PmodOLED_0/s_axi_aclk] [get_bd_pins PmodRTCC_0/s_axi_aclk] [get_bd_pins Switches/s_axi_aclk] [get_bd_pins led_ip/s_axi_aclk] [get_bd_pins processing_system7_0/FCLK_CLK0] [get_bd_pins processing_system7_0/M_AXI_GP0_ACLK] [get_bd_pins ps7_0_axi_periph/ACLK] [get_bd_pins ps7_0_axi_periph/M00_ACLK] [get_bd_pins ps7_0_axi_periph/M01_ACLK] [get_bd_pins ps7_0_axi_periph/M02_ACLK] [get_bd_pins ps7_0_axi_periph/M03_ACLK] [get_bd_pins ps7_0_axi_periph/M04_ACLK] [get_bd_pins ps7_0_axi_periph/M05_ACLK] [get_bd_pins ps7_0_axi_periph/S00_ACLK] [get_bd_pins rst_ps7_0_50M/slowest_sync_clk]
   connect_bd_net -net processing_system7_0_FCLK_RESET0_N [get_bd_pins processing_system7_0/FCLK_RESET0_N] [get_bd_pins rst_ps7_0_50M/ext_reset_in]
-  connect_bd_net -net rst_ps7_0_50M_peripheral_aresetn [get_bd_pins Alarm_Output/s_axi_aresetn] [get_bd_pins Buttons/s_axi_aresetn] [get_bd_pins PmodOLED_0/s_axi_aresetn] [get_bd_pins PmodRTCC_0/s_axi_aresetn] [get_bd_pins Switches/s_axi_aresetn] [get_bd_pins ps7_0_axi_periph/ARESETN] [get_bd_pins ps7_0_axi_periph/M00_ARESETN] [get_bd_pins ps7_0_axi_periph/M01_ARESETN] [get_bd_pins ps7_0_axi_periph/M02_ARESETN] [get_bd_pins ps7_0_axi_periph/M03_ARESETN] [get_bd_pins ps7_0_axi_periph/M04_ARESETN] [get_bd_pins ps7_0_axi_periph/M05_ARESETN] [get_bd_pins ps7_0_axi_periph/S00_ARESETN] [get_bd_pins rst_ps7_0_50M/peripheral_aresetn]
+  connect_bd_net -net rst_ps7_0_50M_peripheral_aresetn [get_bd_pins Buttons/s_axi_aresetn] [get_bd_pins PmodOLED_0/s_axi_aresetn] [get_bd_pins PmodRTCC_0/s_axi_aresetn] [get_bd_pins Switches/s_axi_aresetn] [get_bd_pins led_ip/s_axi_aresetn] [get_bd_pins ps7_0_axi_periph/ARESETN] [get_bd_pins ps7_0_axi_periph/M00_ARESETN] [get_bd_pins ps7_0_axi_periph/M01_ARESETN] [get_bd_pins ps7_0_axi_periph/M02_ARESETN] [get_bd_pins ps7_0_axi_periph/M03_ARESETN] [get_bd_pins ps7_0_axi_periph/M04_ARESETN] [get_bd_pins ps7_0_axi_periph/M05_ARESETN] [get_bd_pins ps7_0_axi_periph/S00_ARESETN] [get_bd_pins rst_ps7_0_50M/peripheral_aresetn]
 
   # Create address segments
-  create_bd_addr_seg -range 0x00010000 -offset 0x41210000 [get_bd_addr_spaces processing_system7_0/Data] [get_bd_addr_segs Alarm_Output/S_AXI/Reg] SEG_Alarm_Output_Reg
+  create_bd_addr_seg -range 0x00010000 -offset 0x41210000 [get_bd_addr_spaces processing_system7_0/Data] [get_bd_addr_segs led_ip/S_AXI/Reg] SEG_Alarm_Output_Reg
   create_bd_addr_seg -range 0x00010000 -offset 0x41220000 [get_bd_addr_spaces processing_system7_0/Data] [get_bd_addr_segs Buttons/S_AXI/Reg] SEG_Buttons_Reg
   create_bd_addr_seg -range 0x00010000 -offset 0x40000000 [get_bd_addr_spaces processing_system7_0/Data] [get_bd_addr_segs PmodOLED_0/AXI_LITE_SPI/Reg0] SEG_PmodOLED_0_Reg0
   create_bd_addr_seg -range 0x00001000 -offset 0x40010000 [get_bd_addr_spaces processing_system7_0/Data] [get_bd_addr_segs PmodOLED_0/AXI_LITE_GPIO/Reg0] SEG_PmodOLED_0_Reg01

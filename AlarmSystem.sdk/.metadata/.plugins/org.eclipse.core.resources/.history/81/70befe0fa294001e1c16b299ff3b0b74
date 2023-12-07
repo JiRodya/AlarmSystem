@@ -1,0 +1,47 @@
+#include "interrupt_handler.h"
+#include "oled.h"
+#include "clock.h"
+#include "data_handle.h"
+#include "io.h"
+
+
+#include <stdio.h>
+
+#include "xscutimer.h"
+#include "xscugic.h"
+#include "xgpio.h"
+#include "xil_printf.h"
+
+//--global variables
+extern XGpio led, dip, push;
+extern int led_count;
+
+//--local variables
+int psb_check, dip_check, dip_check_prev, count;
+
+//--function prototypes
+static int Init_Peripherals();
+
+int main(){
+
+	//--SETUP--
+
+	//--init vars
+	xil_printf("-- Start of the Program --\r\n");
+	count = 0;
+
+	//--init peripherals
+	Init_Peripherals();
+
+
+	//--interrupts
+	Init_GIC();
+	Configure_GIC();
+	EnableInts();
+
+
+}
+
+int Init_Peripherals(){
+	return 0;
+}

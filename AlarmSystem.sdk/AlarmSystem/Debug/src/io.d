@@ -13,12 +13,8 @@ src/io.o src/io.o: ../src/io.c \
  ../../AlarmSystem_bsp/ps7_cortexa9_0/include/xpseudo_asm.h \
  ../../AlarmSystem_bsp/ps7_cortexa9_0/include/xreg_cortexa9.h \
  ../../AlarmSystem_bsp/ps7_cortexa9_0/include/xpseudo_asm_gcc.h \
- ../../AlarmSystem_bsp/ps7_cortexa9_0/include/xscutimer.h \
- ../../AlarmSystem_bsp/ps7_cortexa9_0/include/xscutimer_hw.h \
- ../../AlarmSystem_bsp/ps7_cortexa9_0/include/xscugic.h \
- ../../AlarmSystem_bsp/ps7_cortexa9_0/include/xscugic_hw.h \
- ../../AlarmSystem_bsp/ps7_cortexa9_0/include/xil_exception.h \
- ../../AlarmSystem_bsp/ps7_cortexa9_0/include/xparameters.h
+ ../../AlarmSystem_bsp/ps7_cortexa9_0/include/xparameters.h \
+ ../../AlarmSystem_bsp/ps7_cortexa9_0/include/xil_printf.h
 
 C:\X_Projects\AlarmSystem\AlarmSystem.sdk\AlarmSystem\inc/io.h:
 
@@ -48,14 +44,6 @@ C:\X_Projects\AlarmSystem\AlarmSystem.sdk\AlarmSystem\inc/io.h:
 
 ../../AlarmSystem_bsp/ps7_cortexa9_0/include/xpseudo_asm_gcc.h:
 
-../../AlarmSystem_bsp/ps7_cortexa9_0/include/xscutimer.h:
-
-../../AlarmSystem_bsp/ps7_cortexa9_0/include/xscutimer_hw.h:
-
-../../AlarmSystem_bsp/ps7_cortexa9_0/include/xscugic.h:
-
-../../AlarmSystem_bsp/ps7_cortexa9_0/include/xscugic_hw.h:
-
-../../AlarmSystem_bsp/ps7_cortexa9_0/include/xil_exception.h:
-
 ../../AlarmSystem_bsp/ps7_cortexa9_0/include/xparameters.h:
+
+../../AlarmSystem_bsp/ps7_cortexa9_0/include/xil_printf.h:

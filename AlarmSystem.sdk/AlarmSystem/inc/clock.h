@@ -31,7 +31,7 @@ typedef struct {
 // If RTCC is already set, change 1 to 0
 #define SET_CLOCK 1
 
-PmodRTCC clock;
+extern PmodRTCC clock;
 
 //core functiosn
 void Clock_Init(u8 mode);
@@ -41,8 +41,10 @@ Time Clock_GetTime(Target src);
 void Clock_SetTime(Time val, Target t);
 void Clock_SetAlarm(Time time);
 u8  Clock_CheckAlarm();
-void Clock_ResetAlarm (Target alarm);
+void Clock_ResetAlarm ();
 //void PrintTime(RTCC_Target src);
 Time Clock_IncrementTime(Time time, int delta_seconds);
+u8 Clock_IsAlarmActive();
+
 
 #endif
